@@ -23,7 +23,7 @@
 (deftest get-similar-route-test
   (testing "Get similar route test"
     (let [id       "915083"
-          response (app {:request-method :post
+          response (app {:request-method :get
                          :uri            "/api/get-similar"
                          :query-params   {"id" id}})
           status   (:status response)
