@@ -11,17 +11,10 @@
               out (io/output-stream file)]
     (io/copy in out)))
 
-(defn scrape-data []
-  (let [current-time (t/now)
-        prev-scrape-time (f/parse (slurp "resources/prev-scrape-time.txt"))]
-    ; check if prev time is on prev day
-    (if (or (nil? prev-scrape-time)
-            (not= (t/day prev-scrape-time) (t/day current-time)))
-      ((copy alko-url "resources/alko.xlsx")
-       (spit "resources/prev-scrape-time.txt" (f/unparse (f/formatters :date) current-time)))
-      (println "Already scraped today"))))
+(def data (atom nil))
 
-(def data
+(defn process-data
+  []
   (->> (ss/load-workbook "resources/alko.xlsx")
        (ss/select-sheet "Alkon Hinnasto Tekstitiedostona")
        (ss/select-columns
@@ -37,3 +30,26 @@
          :V :alcohol-percentage})
        (remove nil?)))
 
+(defn scrape-data []
+  (let [current-time (t/now)
+        prev-scrape-time (f/parse (slurp "resources/prev-scrape-time.txt"))]
+    ; check if prev time is on prev day
+    (if (or (nil? prev-scrape-time)
+            (not= (t/day prev-scrape-time) (t/day current-time)))
+      (do
+        (copy alko-url "resources/alko.xlsx")
+        (reset! data (process-data))
+        (spit "resources/prev-scrape-time.txt" (f/unparse (f/formatters :date) current-time))
+        {:status 200
+         :body "scraped"
+         :info (str "Scraped at " (f/unparse (f/formatters :date) current-time))})
+       {:status 200
+        :body "ok"
+        :info "Already scraped today"})))
+
+(comment
+  (scrape-data)
+  @data
+  (reset! data nil)
+  (reset! data (process-data))
+  )

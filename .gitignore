@@ -16,3 +16,5 @@ profiles.clj
 .lsp
 prev-scrape-time.txt
 .calva
+.vscode
+
