@@ -19,6 +19,7 @@
 (comment
   (app {:request-method :get :uri "/api/products"})
   (app {:request-method :get :uri "/"})
+  (app {:request-method :get :uri "/swagger.json"})
   (app {:request-method :get :uri "/health"})
   (app {:request-method :get :uri "/scrape"})
   (go)

@@ -11,8 +11,6 @@
 
 (defmethod ig/prep-key :server/jetty
   [_ config]
-  (println config)
-  (println (env :port))
   (if-let [env-port (env :port)]
     (merge config {:port (Integer/parseInt env-port)})
     config))
