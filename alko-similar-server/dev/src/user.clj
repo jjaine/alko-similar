@@ -17,7 +17,7 @@
 (def app (-> ig-state/system :alko-similar-server/app))
 
 (comment
-  (app {:request-method :get :uri "/api/products"})
+  (app {:request-method :get :uri "/api/product" :query-params {"id" "915083"}})
   (app {:request-method :get :uri "/"})
   (app {:request-method :get :uri "/swagger.json"})
   (app {:request-method :get :uri "/health"})

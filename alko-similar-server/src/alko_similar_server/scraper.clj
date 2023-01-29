@@ -2,7 +2,8 @@
   (:require [clojure.java.io :as io]
             [dk.ative.docjure.spreadsheet :as ss]
             [clj-time.core :as t]
-            [clj-time.format :as f]))
+            [clj-time.format :as f]
+            [ring.util.response :as rr]))
 
 (def alko-url "https://www.alko.fi/INTERSHOP/static/WFS/Alko-OnlineShop-Site/-/Alko-OnlineShop/fi_FI/Alkon%20Hinnasto%20Tekstitiedostona/alkon-hinnasto-tekstitiedostona.xlsx")
 
@@ -40,12 +41,10 @@
         (copy alko-url "resources/alko.xlsx")
         (reset! data (process-data))
         (spit "resources/prev-scrape-time.txt" (f/unparse (f/formatters :date) current-time))
-        {:status 200
-         :body "scraped"
-         :info (str "Scraped at " (f/unparse (f/formatters :date) current-time))})
-       {:status 200
-        :body "ok"
-        :info "Already scraped today"})))
+        (rr/response {:operation "scraped"
+                      :info (str "Scraped at " (f/unparse (f/formatters :date) current-time))}))
+       (rr/response {:operation "none"
+                     :info "Already scraped today"}))))
 
 (comment
   (scrape-data)

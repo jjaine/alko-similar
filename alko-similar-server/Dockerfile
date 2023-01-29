@@ -11,4 +11,4 @@ RUN lein deps
 # Add sources
 COPY . /app
 
-CMD lein run
+CMD lein run "resources/config.edn"
