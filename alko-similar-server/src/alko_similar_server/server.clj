@@ -3,7 +3,8 @@
    [ring.adapter.jetty :as jetty]
    [integrant.core :as ig]
    [environ.core :refer [env]]
-   [alko-similar-server.router :as router]))
+   [alko-similar-server.router :as router]
+   [alko-similar-server.scraper :as scraper]))
 
 (defn app
   [env]
@@ -35,9 +36,11 @@
   (let [config (-> config-file
                    slurp
                    ig/read-string)]
+    (scraper/scrape-data)
     (-> config
         ig/prep
         ig/init)))
 
 (comment
-  (-main "resources/config.edn"))
+  (-main "resources/config.edn")
+  )

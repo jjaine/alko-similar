@@ -8,7 +8,7 @@
 (def alko-url "https://www.alko.fi/INTERSHOP/static/WFS/Alko-OnlineShop-Site/-/Alko-OnlineShop/fi_FI/Alkon%20Hinnasto%20Tekstitiedostona/alkon-hinnasto-tekstitiedostona.xlsx")
 
 (defn- copy [uri file]
-  (with-open [in (io/input-stream uri)
+  (with-open [in  (io/input-stream uri)
               out (io/output-stream file)]
     (io/copy in out)))
 
@@ -32,6 +32,7 @@
        (remove nil?)))
 
 (defn scrape-data []
+  (println "Scraping data...")
   (let [current-time (t/now)
         prev-scrape-time (f/parse (slurp "resources/prev-scrape-time.txt"))]
     ; check if prev time is on prev day
@@ -43,8 +44,10 @@
         (spit "resources/prev-scrape-time.txt" (f/unparse (f/formatters :date) current-time))
         (rr/response {:operation "scraped"
                       :info (str "Scraped at " (f/unparse (f/formatters :date) current-time))}))
-       (rr/response {:operation "none"
-                     :info "Already scraped today"}))))
+       (do
+         (reset! data (process-data))
+         (rr/response {:operation "none"
+                          :info "Already scraped today"})))))
 
 (comment
   (scrape-data)

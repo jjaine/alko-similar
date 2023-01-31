@@ -8,4 +8,5 @@
 | 27.1.2023 | 8     | rewrite for cleaner structure, add initial Dockerfile |
 | 28.1.2023 | 2     | setup swagger, find cause for 500 error |
 | 29.1.2023 | 4     | fix Dockerfile, add docker-compose.yml, implement API for product details |
-| total     | 23    | | 
+| 31.1.2023 | 4     | fix formatting, support for getting similar products based on description, images for products |
+| total     | 27    | | 
