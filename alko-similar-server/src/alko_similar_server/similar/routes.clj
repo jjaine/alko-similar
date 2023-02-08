@@ -2,7 +2,7 @@
   (:require [alko-similar-server.similar.product :as product]))
 
 (defn routes
-  [env]
+  [_env]
   ["/product/:product-id" {:summary "Get a product details with id"
-                           :get {:parameters {:path {:product-id string?}}
-                                 :handler product/get-details}}])
+                           :get     {:parameters {:path {:product-id string?}}
+                                     :handler    product/get-details}}])

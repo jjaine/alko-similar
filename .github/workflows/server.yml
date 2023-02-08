@@ -20,16 +20,35 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: DeLaGuardo/setup-clj-kondo@master
+    - name: Checkout
+      uses: actions/checkout@v3
+
+      # It is important to install java before installing clojure tools which needs java
+      # exclusions: babashka, clj-kondo and cljstyle
+    - name: Prepare java
+      uses: actions/setup-java@v3
       with:
-        version: '2020.04.05'
+        distribution: 'zulu'
+        java-version: '8'
+
+    - name: Setup Clojure tools
+      uses: DeLaGuardo/setup-clojure@10.1
+      with:
+          # Install just one or all simultaneously
+          # The value must indicate a particular version of the tool, or use 'latest'
+          # to always provision the latest version
+          lein: 'latest'                  # Leiningen
+          clj-kondo: 'latest'             # Clj-kondo
+
     - name: Run linter
       run: clj-kondo --lint src
+
     - name: Install dependencies
       run: lein deps
+
     - name: Run tests
       run: lein test
+
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
