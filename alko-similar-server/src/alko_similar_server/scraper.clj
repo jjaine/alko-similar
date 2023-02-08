@@ -33,8 +33,10 @@
 
 (defn scrape-data []
   (println "Scraping data...")
-  (let [current-time (t/now)
-        prev-scrape-time (f/parse (slurp "resources/prev-scrape-time.txt"))]
+  (let [current-time     (t/now)
+        prev-scrape-time (if (.exists (io/as-file "resources/prev-scrape-time.txt"))
+                          (f/parse (slurp "resources/prev-scrape-time.txt"))
+                           nil)]
     ; check if prev time is on prev day
     (if (or (nil? prev-scrape-time)
             (not= (t/day prev-scrape-time) (t/day current-time)))
@@ -43,11 +45,11 @@
         (reset! data (process-data))
         (spit "resources/prev-scrape-time.txt" (f/unparse (f/formatters :date) current-time))
         (rr/response {:operation "scraped"
-                      :info (str "Scraped at " (f/unparse (f/formatters :date) current-time))}))
-       (do
-         (reset! data (process-data))
-         (rr/response {:operation "none"
-                          :info "Already scraped today"})))))
+                      :info      (str "Scraped at " (f/unparse (f/formatters :date) current-time))}))
+      (do
+        (reset! data (process-data))
+        (rr/response {:operation "none"
+                      :info      "Already scraped today"})))))
 
 (comment
   (scrape-data)
