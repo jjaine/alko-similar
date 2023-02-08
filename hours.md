@@ -10,4 +10,5 @@
 | 29.01.2023 | 4     | fix Dockerfile, add docker-compose.yml, implement API for product details |
 | 31.01.2023 | 4     | fix formatting, support for getting similar products based on description, images for products |
 | 08.02.2023 | 4     | create first tests, make tests work with lein test for pipeline usage |
+|            | 1     | add pipeline for test & deploy |
 | total      | 31    | | 
