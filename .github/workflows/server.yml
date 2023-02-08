@@ -8,8 +8,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - alko-similar-server/**
+    #paths:
+      #- alko-similar-server/**
   pull_request:
     branches: [main]
     types: [opened, synchronize]
