@@ -18,7 +18,7 @@
 
 (defn get-details
   [request]
-  (pprint request)
+  #_(pprint request)
   (if-let [id (-> request
                   :path-params
                   :product-id)]
@@ -27,7 +27,7 @@
       (let [img-url  (generate-image-url selected)
             response (assoc selected :image img-url)]
         (rr/response response))
-      (rr/not-found (str "Id not found" id)))
+      (rr/not-found (str "Id not found " id)))
     (rr/not-found "No id given")))
 
 ;; checks if a description has an attribute
