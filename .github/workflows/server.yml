@@ -88,7 +88,7 @@ jobs:
           username: ${{ secrets.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
           source: "docker-compose.yml"
-          target: "docker-compose.yml"
+          target: "~"
       - name: 'Stop old server, pull new image, start server again'
         uses: appleboy/ssh-action@master
         with:
