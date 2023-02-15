@@ -4,7 +4,8 @@
    [integrant.core :as ig]
    [environ.core :refer [env]]
    [alko-similar-server.router :as router]
-   [alko-similar-server.scraper :as scraper]))
+   [alko-similar-server.scraper :as scraper])
+  (:gen-class))
 
 (defn app
   [env]

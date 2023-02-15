@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   app:
-    image: alko-similar-server
-    build: .
+    image: essijukkala/alko-similar:server
     ports:
       - 3000:3000
