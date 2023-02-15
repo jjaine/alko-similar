@@ -48,26 +48,41 @@
 
 (defn get-similar
   ([product]
-   (get-similar product []))
+   (get-similar product [] nil nil))
   ([product filter-parameters]
-   (let [description          (:description product)
-         scores               (get-similar-scores description)
-         sorted               (-> (sort-by :score scores)
-                                  reverse)
-         filtered             (->> sorted
-                                   (filter #(not= (:id %) (:id product))))
-         filtered-with-params (loop [params filter-parameters
-                                     prods  filtered]
-                                (if (empty? params)
-                                  prods
-                                  (let [param               (first params)
-                                        filtered-with-param (filter #(= (param product) (param %)) prods)]
-                                    (recur (rest params) filtered-with-param))))
-         top                  (take 10 filtered-with-params)
-         top-with-images      (->> top
-                                   (map #(assoc % :image (generate-image-url %))))]
+   (get-similar product filter-parameters nil nil))
+  ([product min-price max-price]
+   (get-similar product [] min-price max-price))
+  ([product filter-parameters min-price max-price]
+   (let [description             (:description product)
+         scores                  (get-similar-scores description)
+         sorted                  (-> (sort-by :score scores)
+                                     reverse)
+         filtered                (->> sorted
+                                      (filter #(not= (:id %) (:id product))))
+         filtered-with-params    (loop [params filter-parameters
+                                        prods  filtered]
+                                   (if (empty? params)
+                                     prods
+                                     (let [param               (first params)
+                                           filtered-with-param (filter #(= (param product) (param %)) prods)]
+                                       (recur (rest params) filtered-with-param))))
+         filtered-with-min-price (if (-> min-price
+                                         nil?
+                                         not)
+                                   (filter #(>= (Float/parseFloat (:price %)) min-price)
+                                           filtered-with-params)
+                                   filtered-with-params)
+         filtered-with-max-price (if (-> max-price
+                                         nil?
+                                         not)
+                                   (filter #(<= (Float/parseFloat (:price %)) max-price)
+                                           filtered-with-min-price)
+                                   filtered-with-min-price)
+         top                     (take 10 filtered-with-max-price)
+         top-with-images         (->> top
+                                      (map #(assoc % :image (generate-image-url %))))]
      top-with-images)))
-
 
 (defn get-details
   [request]
@@ -77,24 +92,45 @@
                   :product-id)]
     (if-let [selected (->> (filter (comp #{id} :id) @scraper/data)
                            first)]
-      (let [img-url  (generate-image-url selected)
-            response (assoc selected :image img-url)]
-        (if-let [filter-parameters (-> request
-                                       :query-params
-                                       (get "filter-by"))]
-          (let [parameters (->> (-> filter-parameters
-                                    (clojure.string/split #","))
-                                (map keyword))
-                similar    (get-similar selected parameters)]
-            (rr/response (assoc response :similar similar)))
-          (let [similar (get-similar selected [])]
-            (rr/response (assoc response :similar similar)))))
+      (let [img-url           (generate-image-url selected)
+            response          (assoc selected :image img-url)
+            filter-parameters (-> request
+                                  :query-params
+                                  (get "filter-by"))
+            parameters        (if (-> filter-parameters
+                                      nil?
+                                      not)
+                                (->> (-> filter-parameters
+                                         (clojure.string/split #","))
+                                     (map keyword))
+                                [])
+            min-price-param   (-> request
+                                  :query-params
+                                  (get "min-price"))
+            min-price         (if (-> min-price-param
+                                      nil?
+                                      not)
+                                (Float/parseFloat min-price-param)
+                                nil)
+            max-price-param   (-> request
+                                  :query-params
+                                  (get "max-price"))
+            max-price         (if (-> max-price-param
+                                      nil?
+                                      not)
+                                (Float/parseFloat max-price-param)
+                                nil)
+            similar           (get-similar selected parameters min-price max-price)]
+        (rr/response (assoc response :similar similar)))
       (rr/not-found (str "Id not found " id)))
     (rr/not-found "No id given")))
 
 (comment
-  (get-details {:path-params {:product-id "953514"}
-                :query-params {"filter-by" "country"}})
+  (get-details {:path-params {:product-id "942617"}
+                :query-params {"filter-by" "country"
+                               "min-price" "10"
+                               "max-price" "20"}
+                })
   
   (get-similar {:description "Meripihkanruskea, keskitäyteläinen, pehmeä, piparminttuinen, kermatoffeinen, kevyen havuinen, vaniljainen",
                  :package-type "pullo",
@@ -105,7 +141,7 @@
                  :package-size "0,5 l",
                  :price "19.69",
                  :country "Suomi",
-                 :subtype "Mausteliköörit"} '(:country))
+                 :subtype "Mausteliköörit"} '(:country) 10 20)
   
   (let [request {:path-params {:product-id "915083"
                                :filter-by '("country")}}]
