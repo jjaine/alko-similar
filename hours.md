@@ -13,4 +13,5 @@
 |            | 1     | add pipeline for test & deploy |
 |            | 1     | tried to deploy image to fly.io, encountered limits |
 |            | 1     | pipeline to build docker image and publish it to hub |
-| total      | 34    | | 
+| 15.02.2023 | 6     | figure out deployment to cloud instance, add similar products with filtering to product request |
+| total      | 40    | | 

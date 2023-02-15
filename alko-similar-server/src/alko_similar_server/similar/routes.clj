@@ -4,5 +4,6 @@
 (defn routes
   [_env]
   ["/product/:product-id" {:summary "Get a product details with id"
-                           :get     {:parameters {:path {:product-id string?}}
+                           :get     {:parameters {:path {:product-id string?}
+                                                  :query {:filter-by string?}}
                                      :handler    product/get-details}}])

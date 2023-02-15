@@ -9,7 +9,8 @@
             [ring.util.response :as rr]
             [reitit.coercion.spec :as coercion-spec]
             [reitit.ring.coercion :as coercion]
-            [reitit.ring.middleware.exception :as exception]))
+            [reitit.ring.middleware.exception :as exception]
+            [reitit.ring.middleware.parameters :as parameters]))
 
 (def swagger-docs
   ["/swagger.json"
@@ -23,7 +24,8 @@
 (def router-config
   {:data {:coercion coercion-spec/coercion
           :muuntaja m/instance
-          :middleware [swagger/swagger-feature
+          :middleware [parameters/parameters-middleware
+                       swagger/swagger-feature
                        muuntaja/format-middleware
                        exception/exception-middleware
                        coercion/coerce-request-middleware]}})
