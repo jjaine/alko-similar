@@ -69,5 +69,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:alko-similar-server"
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: essijukkala/alko-similar:server

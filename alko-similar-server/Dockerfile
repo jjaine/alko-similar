@@ -11,6 +11,4 @@ RUN lein deps
 # Add sources
 COPY . /app
 
-RUN lein uberjar
-
-CMD java -jar target/alko-similar-server.jar "resources/config.edn"
+CMD lein run "resources/config.edn"
