@@ -50,7 +50,6 @@
   ([product]
    (get-similar product []))
   ([product filter-parameters]
-   (pprint product)
    (let [description          (:description product)
          scores               (get-similar-scores description)
          sorted               (-> (sort-by :score scores)
@@ -67,13 +66,12 @@
          top                  (take 10 filtered-with-params)
          top-with-images      (->> top
                                    (map #(assoc % :image (generate-image-url %))))]
-     (println top)
      top-with-images)))
 
 
 (defn get-details
   [request]
-  (pprint request)
+  #_(pprint request)
   (if-let [id (-> request
                   :path-params
                   :product-id)]
