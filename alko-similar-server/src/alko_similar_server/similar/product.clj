@@ -71,7 +71,7 @@
 
 (defn get-details
   [request]
-  #_(pprint request)
+  (pprint request)
   (if-let [id (-> request
                   :path-params
                   :product-id)]
