@@ -1,0 +1,21 @@
+{
+  "name": "alko-similar-client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "shadow-cljs watch app",
+    "release": "shadow-cljs release app",
+    "server": "shadow-cljs server",
+    "clean": "rm -rf target && rm -rf public/js"
+  },
+  "dependencies": {
+    "highlight.js": "11.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "shadow-cljs": "2.20.20",
+    "tailwindcss": "^3.2.6"
+    
+  }
+}
