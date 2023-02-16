@@ -8,7 +8,7 @@
 
 (defn routes
   [_env]
-  ["/product/:product-id" {:summary "Get a product details with id"
+  ["/product/:product-id" {:summary "Get product details with id"
                            :get     {:parameters {:path {:product-id string?}
                                                   :query (s/keys :opt-un [::filter-by ::min-price ::max-price])}
                                      :handler    product/get-details}}])
