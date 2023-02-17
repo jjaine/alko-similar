@@ -7,7 +7,8 @@
                  [environ "1.2.0"]
                  [metosin/reitit "0.5.18"]
                  [clj-time "0.15.2"]
-                 [dk.ative/docjure "1.19.0"]]
+                 [dk.ative/docjure "1.19.0"]
+                 [ring-cors "0.1.13"]]
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev {:source-paths ["dev/src"]

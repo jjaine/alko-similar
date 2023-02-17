@@ -10,7 +10,8 @@
             [reitit.coercion.spec :as coercion-spec]
             [reitit.ring.coercion :as coercion]
             [reitit.ring.middleware.exception :as exception]
-            [reitit.ring.middleware.parameters :as parameters]))
+            [reitit.ring.middleware.parameters :as parameters]
+            [ring.middleware.cors :refer [wrap-cors]]))
 
 (def swagger-docs
   ["/swagger.json"
@@ -28,7 +29,10 @@
                        swagger/swagger-feature
                        muuntaja/format-middleware
                        exception/exception-middleware
-                       coercion/coerce-request-middleware]}})
+                       coercion/coerce-request-middleware
+                       [wrap-cors
+                        :access-control-allow-origin [#"http://localhost:3001"]
+                        :access-control-allow-methods [:get :post]]]}})
 
 (defn routes
   [env]

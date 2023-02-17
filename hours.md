@@ -15,4 +15,6 @@
 |            | 1     | pipeline to build docker image and publish it to hub |
 | 15.02.2023 | 7     | figure out deployment to cloud instance, add similar products with filtering to product request |
 | 16.02.2023 | 1     | add scheduled tasks to pipeline, update readme for server |
-| total      | 41    | | 
+|            | 1     | initial setup for client |
+| 17.02.2023 | 8     | client initial version with working request etc. |
+| total      | 51    | | 

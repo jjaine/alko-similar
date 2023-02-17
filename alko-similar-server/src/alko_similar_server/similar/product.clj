@@ -129,8 +129,7 @@
   (get-details {:path-params {:product-id "942617"}
                 :query-params {"filter-by" "country"
                                "min-price" "10"
-                               "max-price" "20"}
-                })
+                               "max-price" "20"}})
   
   (get-similar {:description "Meripihkanruskea, keskitäyteläinen, pehmeä, piparminttuinen, kermatoffeinen, kevyen havuinen, vaniljainen",
                  :package-type "pullo",
