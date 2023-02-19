@@ -18,6 +18,7 @@ on:
 
 jobs:
   lint-and-test:
+    name: Lint & test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -101,6 +102,7 @@ jobs:
             docker compose up -d
   health-check:
     runs-on: ubuntu-latest
+    name: Health check
     needs: deploy
     steps:
     - name: Checkout

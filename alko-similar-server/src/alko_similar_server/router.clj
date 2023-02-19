@@ -31,7 +31,7 @@
                        exception/exception-middleware
                        coercion/coerce-request-middleware
                        [wrap-cors
-                        :access-control-allow-origin [#"http://localhost"]
+                        :access-control-allow-origin [#"http://.*"]
                         :access-control-allow-methods [:get]]]}})
 
 (defn routes

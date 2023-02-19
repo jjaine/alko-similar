@@ -17,7 +17,8 @@ on:
       - alko-similar-client/**
 
 jobs:
-  lint-and-test:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
