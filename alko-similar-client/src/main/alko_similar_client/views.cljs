@@ -27,7 +27,7 @@
        [:input {:class "w-1/6 h-full rounded-xl p-4 bg-blue-200"
                 :type "button"
                 :value "Search"
-                :on-click #(rf/dispatch [:get-product "945904"])}]]]
+                :on-click #(rf/dispatch [:get-product @id])}]]]
      [:div {:class "w-full h-1/4 shadow-lg rounded-xl bg-red-300 flex flex-col justify-center items-center"}
       [:button {:class "w-1/4 h-1/4 rounded-xl p-4 bg-blue-200"}
        "Use camera to scan barcode"]]]))
