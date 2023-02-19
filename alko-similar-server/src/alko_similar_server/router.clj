@@ -32,7 +32,7 @@
                        coercion/coerce-request-middleware
                        [wrap-cors
                         :access-control-allow-origin [#"http://localhost"]
-                        :access-control-allow-methods [:get :post]]]}})
+                        :access-control-allow-methods [:get]]]}})
 
 (defn routes
   [env]
