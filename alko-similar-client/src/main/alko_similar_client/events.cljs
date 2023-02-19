@@ -3,7 +3,7 @@
             [ajax.core :as ajax]
             [day8.re-frame.http-fx]))
 
-(def products-endpoint "http://alko-similar.dy.fi/:3000/api/product/")
+(def products-endpoint "http://alko-similar.dy.fi:3000/api/product/")
 
 (reg-event-fx
  :get-product
