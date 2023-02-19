@@ -17,4 +17,5 @@
 | 16.02.2023 | 1     | add scheduled tasks to pipeline, update readme for server |
 |            | 1     | initial setup for client |
 | 17.02.2023 | 8     | client initial version with working request etc. |
-| total      | 51    | | 
+| 19.02.2023 | 1     | add Dockerfile for client, pipeline for building |
+| total      | 52    | | 

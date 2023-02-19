@@ -1,7 +1,11 @@
 version: '3.8'
 
 services:
-  app:
+  server:
     image: essijukkala/alko-similar:server
     ports:
       - 3000:3000
+  client:
+    image: essijukkala/alko-similar:client
+    ports:
+      - 80:3001
