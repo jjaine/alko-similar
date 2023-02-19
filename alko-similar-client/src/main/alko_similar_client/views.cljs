@@ -20,13 +20,13 @@
     [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) " hidden" ""))}
      [:div {:class "w-full h-1/4 shadow-lg rounded-xl bg-yellow-300 flex flex-col justify-center items-center"}
       [:div {:class "w-5/6 h-1/4"}
-       [:input {:class "w-4/6 h-full rounded-xl p-4 m-4"
-                :type "text"
+       [:input {:class       "w-4/6 h-full rounded-xl p-4 m-4"
+                :type        "text"
                 :placeholder "Search by URL or ID"
-                :on-change (fn [val] (reset! id (.-value (.-target val))))}]
-       [:input {:class "w-1/6 h-full rounded-xl p-4 bg-blue-200"
-                :type "button"
-                :value "Search"
+                :on-change   (fn [val] (reset! id (.-value (.-target val))))}]
+       [:input {:class    "w-1/6 h-full rounded-xl p-4 bg-blue-200"
+                :type     "button"
+                :value    "Search"
                 :on-click #(rf/dispatch [:get-product @id])}]]]
      [:div {:class "w-full h-1/4 shadow-lg rounded-xl bg-red-300 flex flex-col justify-center items-center"}
       [:button {:class "w-1/4 h-1/4 rounded-xl p-4 bg-blue-200"}
