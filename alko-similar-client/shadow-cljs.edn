@@ -19,4 +19,7 @@
                 :modules {:main {:init-fn alko-similar-client.app/init}}
 
                 :devtools {:http-root   "public"
-                           :http-port   3001}}}}
+                           :http-port   3001}
+                
+                :dev {:closure-defines {alko-similar-client.events/URL "http://localhost:3000"}}
+                :release {:optimizations :simple}}}}

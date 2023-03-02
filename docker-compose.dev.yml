@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  server:
+    image: alko-similar-server-dev
+    build:
+      context: ./alko-similar-server
+      dockerfile: dev.Dockerfile
+    ports:
+      - 3000:3000
+    container_name: alko-similar-server-dev
+  client:
+    image: alko-similar-client-dev
+    build:
+      context: ./alko-similar-client
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./alko-similar-client:/app
+    ports:
+      - 3001:3001
+      - 9630:9630 # for live reload
+      - 3333:3333 # nrepl
+    container_name: alko-similar-client-dev
