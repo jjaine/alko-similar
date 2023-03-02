@@ -5,3 +5,8 @@
  :product
  (fn [db _]
    (:product db)))
+
+(reg-sub
+ :errors
+  (fn [db _]
+    (:errors db)))

@@ -9,6 +9,7 @@
     "clean": "rm -rf target && rm -rf public/js"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.16",
     "highlight.js": "11.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

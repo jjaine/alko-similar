@@ -26,6 +26,12 @@
        (assoc-in [:product] nil))))
 
 (reg-event-db
+ :reset-errors
+ (fn [db _]
+   (-> db
+       (assoc-in [:errors] nil))))
+
+(reg-event-db
  :get-product-success
  (fn [db [_ product]]
    (let [product-fn (fn [product]
@@ -43,7 +49,8 @@
 (reg-event-db
  :endpoint-request-error
  (fn [db [_ request-type response]]
-            (-> db
-                (assoc-in [:errors request-type] (get response :status-text))
-                (assoc-in [:loading request-type] false))))
+   (js/console.log "endpoint-request-error" request-type response)
+   (-> db
+       (assoc-in [:errors request-type] (first (get response :response)))
+       (assoc-in [:loading request-type] false))))
 
