@@ -8,7 +8,4 @@ WORKDIR /app
 COPY project.clj /app
 RUN lein deps
 
-# Add sources
-COPY . /app
-
-CMD lein run "resources/config.edn"
+CMD LEIN_REPL_HOST=0.0.0.0 lein update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- with-profile +dev repl :headless :port 40000

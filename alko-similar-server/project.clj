@@ -14,6 +14,8 @@
              :dev {:source-paths ["dev/src"]
                    :resource-paths ["dev/resources"]
                    :dependencies [[ring/ring-mock "0.4.0"]
-                                  [integrant/repl "0.3.2"]]}}
+                                  [integrant/repl "0.3.2"]
+                                  [nrepl "1.0.0"]]
+                   :plugins [[cider/cider-nrepl "0.28.5"]]}}
   :uberjar-name "alko-similar-server.jar"
   :main alko-similar-server.server)

@@ -6,8 +6,11 @@ services:
     build:
       context: ./alko-similar-server
       dockerfile: dev.Dockerfile
+    volumes:
+      - ./alko-similar-server:/app
     ports:
       - 3000:3000
+      - 40000:40000 # repl
     container_name: alko-similar-server-dev
   client:
     image: alko-similar-client-dev
