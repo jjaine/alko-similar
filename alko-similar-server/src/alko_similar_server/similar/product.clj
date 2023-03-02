@@ -122,11 +122,16 @@
                                 nil)
             similar           (get-similar selected parameters min-price max-price)]
         (rr/response (assoc response :similar similar)))
-      (rr/not-found (str "Id not found " id)))
-    (rr/not-found "No id given")))
+      (rr/not-found [(str "Product not found with id " id)]))
+    (rr/not-found ["No product id given"])))
 
 (comment
   (get-details {:path-params {:product-id "942617"}
+                :query-params {"filter-by" "country"
+                               "min-price" "10"
+                               "max-price" "20"}})
+  
+  (get-details {:path-params {}
                 :query-params {"filter-by" "country"
                                "min-price" "10"
                                "max-price" "20"}})
@@ -163,7 +168,7 @@
                (rr/response (assoc response :similar similar))))
             (let [similar (get-similar selected [])]
               (rr/response (assoc response :similar similar)))))
-        (rr/not-found (str "Id not found " id)))
-      (rr/not-found "No id given")))
+        (rr/not-found [(str "Id not found " id)]))
+      (rr/not-found ["No id given"])))
 )
 

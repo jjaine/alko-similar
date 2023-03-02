@@ -40,11 +40,12 @@
    (ring/router
     [swagger-docs
      ["/api" (similar/routes env)]
+     ["/api/product/" {:get {:handler (fn [_] (rr/not-found ["No product id given"]))}}]
      ["/scrape" {:summary "Scrape the alko website"
-                 :get {:handler (fn [_] (let [res (scraper/scrape-data)]
-                                          res))}}]
+                 :get     {:handler (fn [_] (let [res (scraper/scrape-data)]
+                                              res))}}]
      ["/health" {:summary "Is the server running?"
-                 :get {:handler (fn [_] (rr/response nil))}}]]
+                 :get     {:handler (fn [_] (rr/response nil))}}]]
     router-config)
    (ring/routes
     (swagger-ui/create-swagger-ui-handler {:path "/"}))))
