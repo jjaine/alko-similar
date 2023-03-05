@@ -19,4 +19,5 @@
 | 17.02.2023 | 8     | client initial version with working request etc. |
 | 19.02.2023 | 2     | add Dockerfile for client, pipeline for building |
 | 02.03.2023 | 5     | setup development env with docker, small fixes |
-| total      | 58    | | 
+| 05.03.2023 | 8     | styles for product page |
+| total      | 66    | | 

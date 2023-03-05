@@ -25,6 +25,7 @@
          :E :price
          :I :type
          :J :subtype
+         :L :beer-type
          :M :country
          :S :description
          :T :package-type

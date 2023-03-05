@@ -1,6 +1,6 @@
 module.exports = {
   content: [
-    "./src/**/**/*.cljs"
+    "./src/**/**/*.{cljs,html,css,js}",
   ],
   theme: {
     extend: {
@@ -9,6 +9,50 @@ module.exports = {
         '1/4': '25%',
         full: '100%',
       },
-    }
+      colors: {
+        lager: '#f8a542',
+        tumma_lager: '#734e29',
+        pils: '#e4d30e',
+        vahva_lager: '#b0811f',
+        vehnäolut: '#fade5a',
+        ale: '#b03a1e',
+        'stout_&_porter': '#241b0e',
+        erikoisuus: '#9d305f',
+        ipa: '#b03a1e',
+        'marjaisa_&_raikas': '#685ec4',
+        'pehmeä_&_hedelmäinen': '#dcaabf',
+        'mehevä_&_hilloinen': '#ce106e',
+        'vivahteikas_&_kehittynyt': '#fa511f',
+        'roteva_&_voimakas': '#6d3332',
+        'pehmeä_&_kepeä': '#f8e848',
+        'lempeä_&_makeahko': '#f07800',
+        'pirteä_&_hedelmäinen': '#5bae33',
+        'vivahteikas_&_ryhdikäs': '#1281a6',
+        'runsas_&_paahteinen': '#a05020',
+        'kepeä_&_viljainen_viskit': '#fbe37f',
+        'pehmeä_&_hedelmäinen_viskit': '#31984f',
+        'hedelmäinen_&_aromikas_viskit': '#e99926',
+        'vivahteikas_&_ryhdikäs_viskit': '#4d6eb1',
+        'runsas_&_voimakas_viskit': '#774314',
+        greippinen: '#abe1fb',
+        sitruksinen: '#f7ee61',
+        hedelmäinen: '#f37022',
+        marjaisa: '#ee3d97',
+        maustetut_ja_muut: '#a25c98',
+        'vs-konjakit': '#ecc300',
+        'vsop-konjakit': '#ff7300',
+        'xo-konjakit': '#89532f',
+        muut_konjakit: '#7b858a',
+        tastestyle_441: '#ebc22b',
+        tastestyle_443: '#885333',
+        tastestyle_445: '#6cc24a',
+        tastestyle_447: '#0085ad',
+        tastestyle_449: '#ea0437',
+        'regal-blue': '#243c5a',
+      },
+      fontFamily: {
+        'locator': ['locator-web', 'sans-serif'],
+      }
+    },
   },
 }
