@@ -2,7 +2,6 @@
   (:require [re-frame.core :as rf]
             [reagent.core :as r]
             ["@heroicons/react/24/outline/ExclamationTriangleIcon" :as error-icon]
-            ["@heroicons/react/24/outline/GlobeEuropeAfricaIcon" :as globe-icon]
             ["@heroicons/react/24/outline/ReceiptPercentIcon" :as percent-icon]
             [clojure.string :as string]))
 
@@ -47,6 +46,8 @@
    :tastestyle_449 "bg-tastestyle_449"})
 
 (def id (r/atom ""))
+
+(def alko-url "https://www.alko.fi/tuotteet/")
 
 (defn header
   []
@@ -109,7 +110,9 @@
                     subtype
                     beer-type
                     country
+                    region
                     label-info
+                    grapes
                     package-type
                     alcohol-percentage
                     image
@@ -134,13 +137,14 @@
             price-euros (-> price-float
                             (js/Math.floor))
             price-cents (-> price-float
-                            (js/Math.floor)
-                            (- price-float)
+                            (- price-euros)
                             (* 100)
-                            (js/Math.floor)
-                            (* -1))]
+                            (js/Math.round))
+            price-cents-str (if (< price-cents 10)
+                              (str "0" price-cents)
+                              (str price-cents))]
         (js/console.log "color" color)
-        (js/console.log "product-info" id name description package-size price type subtype beer-type label-info country package-type alcohol-percentage image similar)
+        (js/console.log "product-info" id name description package-size price type subtype beer-type label-info grapes country region package-type alcohol-percentage image similar)
         [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) "" " hidden"))}
          [:div {:class "flex flex-row justify-center"}
           [:div
@@ -153,21 +157,29 @@
             [:div {:class "flex flex-col"}
              [:p {:class "flex flex-row"}
               [:span {:class "text-4xl font-locator font-thin"} price-euros]
-              [:span {:class "text-m font-locator font-thin mt-[0.1rem] ml-[0.2rem] underline"} price-cents]]
+              [:span {:class "text-m font-locator font-thin mt-[0.1rem] ml-[0.2rem] underline"} price-cents-str]]
              [:p {:class "text-m font-locator font-thin text-gray-500 text-right"} (str package-size)]]]
            [:p {:class "text-sm py-2 font-locator "} description]
            [:div {:class "flex flex-row content-center"}
-            [:> globe-icon {:style {:height        "1.5rem" ; :> creates a Reagent component from a React one
-                                    :width         "1.5rem"
-                                    :margin-left   "0.5rem"
-                                    :margin-right  "0.5rem"
-                                    :margin-top    "auto"
-                                    :margin-bottom "auto"}}]
+            [:div {:class "bg-globe h-6 w-6 mx-2 my-auto"}]
             [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} country]
+            (when (-> region
+                      string/blank?
+                      not)
+              [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} region])
             (when (-> label-info
-                    string/blank?
-                    not)
+                      string/blank?
+                      not)
               [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} label-info])]
+           (when (-> grapes
+                     string/blank?
+                     not)
+             [:div {:class "flex flex-row content-center"}
+              [:div {:class "bg-grapes h-6 w-6 mx-2 my-auto bg-no-repeat"}]
+              (let [grapes-split (string/split grapes #", ")]
+                (for [grape grapes-split]
+                  [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"
+                       :key grape} grape]))])
            [:div {:class "flex flex-row content-center"}
             [:> percent-icon {:style {:height        "1.5rem" ; :> creates a Reagent component from a React one
                                       :width         "1.5rem"
@@ -175,7 +187,13 @@
                                       :margin-right  "0.5rem"
                                       :margin-top    "auto"
                                       :margin-bottom "auto"}}]
-            [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} (str alcohol-percentage "%")]]]
+            [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} (str alcohol-percentage "%")]]
+           [:div {:class "flex flex-row content-center"}
+            [:div {:class "bg-search h-6 w-6 mx-2 my-auto"}]
+            [:a {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator underline"
+                 :href (str alko-url id)
+                 :target "_blank"} 
+             "alko.fi"]]]
           [:img {:class "max-h-60 ml-8"
                  :src    image}]]])
       [:p "border-solid border-4 border-gray-500 m-2"])))

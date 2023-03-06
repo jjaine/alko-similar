@@ -27,10 +27,13 @@
          :J :subtype
          :L :beer-type
          :M :country
+         :N :region
          :P :label-info
+         :R :grapes
          :S :description
          :T :package-type
-         :V :alcohol-percentage})
+         :V :alcohol-percentage
+         :AD :ean})
        (remove nil?)))
 
 (defn scrape-data []
