@@ -2,7 +2,7 @@
   (:require ["@heroicons/react/24/outline/ExclamationTriangleIcon" :as error-icon]
             [re-frame.core :as rf]
             [clojure.string :as string]
-            [alko-similar-client.view.product :as product]))
+            [alko-similar-client.views.product :as product]))
 
 (defn parse-id
   [val]
