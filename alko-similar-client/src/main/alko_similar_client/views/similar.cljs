@@ -25,7 +25,7 @@
                 subtype-color
                 "bg-gray-800")]
     [:div {:class "flex flex-col"}
-     [:p {:class (str "py-1 px-2 text-xs text-center font-locator " color)} (string/capitalize subtype-key)]
+     [:p {:class (str "py-1 px-2 text-[0.65rem] text-center font-locator " color)} (string/capitalize subtype-key)]
      [:p {:class "border-b border-gray-300 py-1 px-2 pl text-[0.65rem] text-center font-locator"} (string/capitalize type)]
      ]))
 
@@ -91,7 +91,7 @@
                    score
                    product-score]} similar-keywords
            alko-url "https://www.alko.fi/tuotteet/"]
-       [:a {:class  "flex flex-col max-w-[9rem] border border-gray-300 m-1 justify-between"
+       [:a {:class  "flex flex-col w-36 border border-gray-300 m-1 justify-between"
             :href   (str alko-url id)
             :target "_blank"
             :key    id}
