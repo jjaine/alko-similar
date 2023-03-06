@@ -1,9 +1,10 @@
-(ns alko-similar-client.views
-  (:require [re-frame.core :as rf]
-            [reagent.core :as r]
-            ["@heroicons/react/24/outline/ExclamationTriangleIcon" :as error-icon]
-            ["@heroicons/react/24/outline/ReceiptPercentIcon" :as percent-icon]
-            [clojure.string :as string]))
+(ns alko-similar-client.views.product
+  (:require [reagent.core :as r]
+            [re-frame.core :as rf]
+            [clojure.string :as string]
+            ["@heroicons/react/24/outline/ReceiptPercentIcon" :as percent-icon]))
+
+(def id (r/atom ""))
 
 (def colors-variants
   {:lager "bg-lager text-white"
@@ -45,58 +46,7 @@
    :tastestyle_447 "bg-tastestyle_447"
    :tastestyle_449 "bg-tastestyle_449"})
 
-(def id (r/atom ""))
-
 (def alko-url "https://www.alko.fi/tuotteet/")
-
-(defn header
-  []
-  [:div.px-6 {:class "w-full flex flex-col justify-center items-center"}
-   [:img {:src "./img/logo.svg"
-          :class "w-20 h-20 m-4"
-          :on-click (fn []
-                      (js/console.log "header")
-                      (reset! id "")
-                      (rf/dispatch [:reset-product])
-                      (rf/dispatch [:reset-errors]))}]])
-
-(defn parse-id
-  [val]
-  (if (string/includes? val "alko.fi")
-    (let [idx (string/index-of val "tuotteet/")]
-      (subs val (+ idx 9) (+ idx 15)))
-    val))
-
-(defn search-by-url-or-id
-  []
-  (let [product @(rf/subscribe [:product])
-        errors  @(rf/subscribe [:errors])
-        error   (get errors :get-product)]
-    [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) " hidden" ""))}
-     [:div {:class "w-full h-1/4 shadow-lg rounded-xl bg-yellow-300 flex flex-col justify-center items-center"}
-      [:div {:class "w-5/6 h-1/2 flex flex-row justify-center items-center"}
-       [:div {:class "w-4/6 h-full flex flex-col"}
-        [:input {:class       "w-1/2 h-4 rounded-xl p-4 m-4"
-                 :type        "text"
-                 :placeholder "Paste alko.fi URL or product id"
-                 :value       @id
-                 :on-change   (fn [val] (reset! id (parse-id (.-value (.-target val)))))}]
-        [:div {:class (str "w-1/2 h-1/2 flex flex-row" (if (some? error) "" " hidden"))}
-         [:> error-icon {:style {:height       "1.75rem" ; :> creates a Reagent component from a React one
-                                 :width        "1.75rem"
-                                 :margin-left  "1rem"
-                                 :margin-right "0.5rem"
-                                 :color        "#d00000"}}]
-         [:p {:style {:height "2rem"
-                      :color  "#d00000"}} error]]]
-       [:div {:class "w-2/6 h-full flex flex-col"}
-        [:input {:class    "w-full h-4 rounded-xl p-4 m-4 bg-blue-200"
-                 :type     "button"
-                 :value    "Search"
-                 :on-click #(rf/dispatch [:get-product @id])}]]]]
-     [:div {:class "w-full h-1/4 shadow-lg rounded-xl bg-red-300 flex flex-col justify-center items-center"}
-      [:button {:class "w-1/4 h-1/4 rounded-xl p-4 bg-blue-300"}
-       "Use camera to scan barcode"]]]))
 
 (defn product-info
   []
@@ -192,14 +142,8 @@
             [:div {:class "bg-search h-6 w-6 mx-2 my-auto"}]
             [:a {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator underline"
                  :href (str alko-url id)
-                 :target "_blank"} 
+                 :target "_blank"}
              "alko.fi"]]]
           [:img {:class "max-h-60 ml-8"
                  :src    image}]]])
       [:p "border-solid border-4 border-gray-500 m-2"])))
-
-(defn home []
-  [:div
-   [header]
-   [search-by-url-or-id]
-   [product-info]])
