@@ -20,5 +20,6 @@
 | 19.02.2023 | 2     | add Dockerfile for client, pipeline for building |
 | 02.03.2023 | 5     | setup development env with docker, small fixes |
 | 05.03.2023 | 8     | styles for product page |
-| 06.03.2023 | 1     | Change dockerfiles to use multi-stage builds for different platforms, add label info to product view |
-| total      | 67    | | 
+| 06.03.2023 | 1     | change dockerfiles to use multi-stage builds for different platforms, add label info to product view |
+|            | 1     | add more product info, separate views into different files |
+| total      | 68    | | 
