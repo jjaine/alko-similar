@@ -22,4 +22,5 @@
 | 05.03.2023 | 8     | styles for product page |
 | 06.03.2023 | 1     | change dockerfiles to use multi-stage builds for different platforms, add label info to product view |
 |            | 1     | add more product info, separate views into different files |
-| total      | 68    | | 
+|            | 3     | show similar products |
+| total      | 71    | | 

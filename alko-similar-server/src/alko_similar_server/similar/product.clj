@@ -44,7 +44,9 @@
                         (map #(clojure.string/lower-case %)))]
     (->> @scraper/data
          (map
-          #(assoc %1 :score (check-attributes %1 attributes 0))))))
+          #(assoc %1
+                  :score (check-attributes %1 attributes 0)
+                  :product-score (count attributes))))))
 
 (defn get-similar
   ([product]
@@ -79,7 +81,7 @@
                                    (filter #(<= (Float/parseFloat (:price %)) max-price)
                                            filtered-with-min-price)
                                    filtered-with-min-price)
-         top                     (take 10 filtered-with-max-price)
+         top                     (take 6 filtered-with-max-price)
          top-with-images         (->> top
                                       (map #(assoc % :image (generate-image-url %))))]
      top-with-images)))
