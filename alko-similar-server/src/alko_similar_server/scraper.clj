@@ -27,6 +27,7 @@
          :J :subtype
          :L :beer-type
          :M :country
+         :P :label-info
          :S :description
          :T :package-type
          :V :alcohol-percentage})

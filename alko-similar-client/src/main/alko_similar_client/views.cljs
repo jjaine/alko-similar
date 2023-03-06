@@ -109,6 +109,7 @@
                     subtype
                     beer-type
                     country
+                    label-info
                     package-type
                     alcohol-percentage
                     image
@@ -139,7 +140,7 @@
                             (js/Math.floor)
                             (* -1))]
         (js/console.log "color" color)
-        (js/console.log "product-info" id name description package-size price type subtype beer-type country package-type alcohol-percentage image similar)
+        (js/console.log "product-info" id name description package-size price type subtype beer-type label-info country package-type alcohol-percentage image similar)
         [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) "" " hidden"))}
          [:div {:class "flex flex-row justify-center"}
           [:div
@@ -162,7 +163,11 @@
                                     :margin-right  "0.5rem"
                                     :margin-top    "auto"
                                     :margin-bottom "auto"}}]
-            [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} country]]
+            [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} country]
+            (when (-> label-info
+                    string/blank?
+                    not)
+              [:p {:class "border border-gray-300 py-1 px-2 pl m-1 text-sm font-locator"} label-info])]
            [:div {:class "flex flex-row content-center"}
             [:> percent-icon {:style {:height        "1.5rem" ; :> creates a Reagent component from a React one
                                       :width         "1.5rem"
