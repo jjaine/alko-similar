@@ -23,4 +23,5 @@ RUN npm run release
 
 FROM node:16-alpine
 COPY --from=builder /app/public /app/public
+WORKDIR /app
 CMD npx serve public -p 3001
