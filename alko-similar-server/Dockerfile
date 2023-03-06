@@ -13,4 +13,5 @@ COPY . /app
 
 FROM clojure:lein
 COPY --from=builder /app /app
+WORKDIR /app
 CMD lein run "resources/config.edn"
