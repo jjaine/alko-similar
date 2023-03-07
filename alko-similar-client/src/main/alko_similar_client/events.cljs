@@ -48,9 +48,10 @@
 
 (reg-event-fx
  :set-prices
- (fn [{:keys [db]} [_ min-price max-price]]
-   {:db (assoc-in db [:prices] {:min-price min-price
-                                :max-price max-price})}))
+ (fn [{:keys [db]} [_ min-price max-price product-id]]
+   {:db (assoc-in db [:prices] {:product-id product-id
+                                :min-price  min-price
+                                :max-price  max-price})}))
 
 (reg-event-db
  :reset-product

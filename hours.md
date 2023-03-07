@@ -24,5 +24,5 @@
 |            | 1     | add more product info, separate views into different files |
 |            | 3     | show similar products |
 | 07.03.2023 | 6     | implement filtering |
-|            | 2     | separate similars query in API, make price slider filter work |
-| total      | 77    | | 
+|            | 3     | separate similars query in API, make price slider filter work, style slider |
+| total      | 78    | | 

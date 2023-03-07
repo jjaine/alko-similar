@@ -129,18 +129,19 @@
                     alcohol-percentage
                     image]} product
             prices-parsed (->> similar
-                          (map #(:price %))
-                          (map #(js/parseFloat %)))
+                               (map #(:price %))
+                               (map #(js/parseFloat %)))
             min      (->> prices-parsed
                           (apply min)
                           (js/Math.floor))
             max      (->> prices-parsed
                           (apply max)
                           (js/Math.round))]
-        (when (nil? prices)
-          (rf/dispatch [:set-prices min max]))
+        (when (or (nil? prices)
+                  (not= id (:product-id prices)))
+          (rf/dispatch [:set-prices min max id])) 
         [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) "" " hidden"))}
-         [:div {:class "flex flex-row justify-center"}
+         [:div {:class "flex flex-row justify-center mb-10"}
           [:div {:class "max-w-[70%]"}
            [:div {:class "flex flex-row place-content-between"}
             [:div
