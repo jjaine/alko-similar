@@ -1,6 +1,6 @@
 (ns alko-similar-server.router
   (:require [reitit.ring :as ring]
-            [alko-similar-server.similar.routes :as similar]
+            [alko-similar-server.product :as product]
             [alko-similar-server.scraper :as scraper]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
@@ -9,6 +9,7 @@
             [ring.util.response :as rr]
             [reitit.coercion.spec :as coercion-spec]
             [reitit.ring.coercion :as coercion]
+            [clojure.spec.alpha :as s]
             [reitit.ring.middleware.exception :as exception]
             [reitit.ring.middleware.parameters :as parameters]
             [ring.middleware.cors :refer [wrap-cors]]))
@@ -34,13 +35,24 @@
                         :access-control-allow-origin [#"http://.*"]
                         :access-control-allow-methods [:get]]]}})
 
+(s/def ::filter-by string?)
+(s/def ::min-price float?)
+(s/def ::max-price float?)
+
 (defn routes
-  [env]
+  [_env]
   (ring/ring-handler
    (ring/router
     [swagger-docs
-     ["/api" (similar/routes env)]
+     ["/api/product/:product-id" {:summary "Get product details with id"
+                                  :get     {:parameters {:path {:product-id string?}}
+                                            :handler    product/get-details}}]
+     ["/api/similar/:product-id" {:summary "Get similar products with id"
+                                  :get     {:parameters {:path {:product-id string?}
+                                                         :query (s/keys :opt-un [::filter-by ::min-price ::max-price])}
+                                            :handler    product/get-similars}}]
      ["/api/product/" {:get {:handler (fn [_] (rr/not-found ["No product id given"]))}}]
+     ["/api/similar/" {:get {:handler (fn [_] (rr/not-found ["No product id given"]))}}]
      ["/scrape" {:summary "Scrape the alko website"
                  :get     {:handler (fn [_] (let [res (scraper/scrape-data)]
                                               res))}}]

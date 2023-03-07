@@ -12,6 +12,8 @@
                       (js/console.log "header")
                       (reset! product/id "")
                       (rf/dispatch [:reset-product])
+                      (rf/dispatch [:reset-similar])
+                      (rf/dispatch [:reset-prices])
                       (rf/dispatch [:reset-errors]))}]])
 
 (defn app []

@@ -89,7 +89,7 @@
      "alko.fi"]]]))
 
 (defn product-similar
-  [similar filter-by]
+  [similar filter-by min-price max-price]
   [:div {:class "flex flex-row flex-wrap justify-center"}
    (for [similar-product similar]
      (let [similar-keywords (walk/keywordize-keys similar-product)
@@ -106,7 +106,12 @@
        [:div {:class  "flex flex-col w-36 border border-gray-300 m-1 justify-between cursor-pointer"
               :on-click #(do (clear-filters)
                              (reset! filter-by {})
-                             (rf/dispatch [:get-product id]))
+                             (reset! min-price nil)
+                             (reset! max-price nil)
+                             (rf/dispatch [:reset-prices])
+                             (rf/dispatch [:reset-similar])
+                             (rf/dispatch [:get-product id])
+                             (rf/dispatch [:get-similar id]))
               :key id}
         [:div
          (similar-score score product-score)

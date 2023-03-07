@@ -1,4 +1,4 @@
-(ns alko-similar-server.similar.product
+(ns alko-similar-server.product
   (:require [alko-similar-server.scraper :as scraper]
             [clojure.pprint :refer [pprint]]
             [ring.util.response :as rr]
@@ -95,8 +95,20 @@
     (if-let [selected (->> (filter (comp #{id} :id) @scraper/data)
                            first)]
       (let [img-url           (generate-image-url selected)
-            response          (assoc selected :image img-url)
-            filter-parameters (-> request
+            response          (assoc selected :image img-url)]
+        (rr/response response))
+      (rr/not-found [(str "Product not found with id " id)]))
+    (rr/not-found ["No product id given"])))
+
+(defn get-similars
+  [request]
+  (pprint request)
+  (if-let [id (-> request
+                  :path-params
+                  :product-id)]
+    (if-let [selected (->> (filter (comp #{id} :id) @scraper/data)
+                           first)]
+      (let [filter-parameters (-> request
                                   :query-params
                                   (get "filter-by"))
             parameters        (if (-> filter-parameters
@@ -123,32 +135,42 @@
                                 (Float/parseFloat max-price-param)
                                 nil)
             similar           (get-similar selected parameters min-price max-price)]
-        (rr/response (assoc response :similar similar)))
+        (rr/response {:similar similar}))
       (rr/not-found [(str "Product not found with id " id)]))
     (rr/not-found ["No product id given"])))
 
 (comment
-  (get-details {:path-params {:product-id "942617"}
-                :query-params {"filter-by" "country"
-                               "min-price" "10"
-                               "max-price" "20"}})
-  
-  (get-details {:path-params {}
-                :query-params {"filter-by" "country"
-                               "min-price" "10"
-                               "max-price" "20"}})
-  
+  (get-details {:path-params {:product-id "942617"}})
+
+  (get-details {:path-params {}})
+
+  (get-similars {:path-params {:product-id "942617"}})
+
+  (get-similars {:path-params {:product-id "942617"}
+                 :query-params {"filter-by" "country"
+                                "min-price" "10"
+                                "max-price" "20"}})
+
+  (get-similars {:path-params {:product-id "942617"}
+                 :query-params {"min-price" "10"
+                                "max-price" "10"}})
+
+  (get-similars {:path-params {}
+                 :query-params {"filter-by" "country"
+                                "min-price" "10"
+                                "max-price" "20"}})
+
   (get-similar {:description "Meripihkanruskea, keskitäyteläinen, pehmeä, piparminttuinen, kermatoffeinen, kevyen havuinen, vaniljainen",
-                 :package-type "pullo",
-                 :alcohol-percentage "30.0",
-                 :name "Jaloviina Hanki",
-                 :type "Liköörit ja Katkerot",
-                 :id "953514",
-                 :package-size "0,5 l",
-                 :price "19.69",
-                 :country "Suomi",
-                 :subtype "Mausteliköörit"} '(:country) 10 20)
-  
+                :package-type "pullo",
+                :alcohol-percentage "30.0",
+                :name "Jaloviina Hanki",
+                :type "Liköörit ja Katkerot",
+                :id "953514",
+                :package-size "0,5 l",
+                :price "19.69",
+                :country "Suomi",
+                :subtype "Mausteliköörit"} '(:country) 10 20)
+
   (let [request {:path-params {:product-id "915083"
                                :filter-by '("country")}}]
     (if-let [id (-> request
@@ -161,10 +183,10 @@
           (if-let [filter-parameters (-> request
                                          :path-params
                                          :filter-by)]
-            ( (println filter-parameters)
+            ((println filter-parameters)
              (println (map keyword filter-parameters))
              (let [parameters (->>  filter-parameters
-                                    
+
                                     (map keyword))
                    similar    (get-similar selected parameters)]
                (rr/response (assoc response :similar similar))))
@@ -172,5 +194,5 @@
               (rr/response (assoc response :similar similar)))))
         (rr/not-found [(str "Id not found " id)]))
       (rr/not-found ["No id given"])))
-)
+  )
 

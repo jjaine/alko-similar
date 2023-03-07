@@ -48,7 +48,7 @@
                :status)))))
 
 (deftest get-product-route-test
-  (testing "Get similar route test"
+  (testing "Get product route test"
     (let [id          "915083"
           response    (test-endpoint (str "/api/product/" id))
           status      (:status response)
@@ -57,6 +57,18 @@
                           :id)]
       (is (= 200 status))
       (is (= received-id id)))))
+
+(deftest get-similar-route-test
+  (testing "Get similar route test"
+    (let [id       "915083"
+          response (test-endpoint (str "/api/similar/" id))
+          status   (:status response)
+          similar  (-> response
+                       :body
+                       :similar)]
+      (is (= 200 status))
+      (is (not (nil? similar)))
+      (is (> (count similar) 0)))))
 
 (comment
   (test-endpoint "/health")

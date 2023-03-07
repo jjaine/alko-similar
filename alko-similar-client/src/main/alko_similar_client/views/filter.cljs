@@ -12,32 +12,39 @@
       (set! (.. input -checked) false))))
 
 (defn price-slider
-  [product min-price max-price filter-by min max]
+  [product min-price max-price filter-by prices]
   [:div {:class "w-48 flex flex-row flex-wrap justify-center"}
    [:> euro-icon {:style {:height        "1.5rem" ; :> creates a Reagent component from a React one
                           :width         "1.5rem"
                           :margin-right  "0.5rem"
                           :margin-top    "auto"
                           :margin-bottom "auto"}}]
-   [:div {:class "w-40"}
-    [:> Slider {:min             min
-                :max             max
-                :default-value   [@min-price @max-price]
-                :range           true
-                :allow-cross     false
-                :on-after-change (fn [[new_min new_max]]
-                                   
-                                   (if (= new_min min)
-                                     (reset! min-price min)
-                                     (reset! min-price new_min))
-                                   (if (= new_max max)
-                                     (reset! max-price max)
-                                     (reset! max-price new_max))
-                                   (rf/dispatch [:get-product (:id product) @filter-by @min-price @max-price]))}]]])
+   [:div {:class "w-32 m-1 p-2"}
+    (let [min_value (if (not (nil? prices))
+                      (:min-price prices)
+                      0)
+          max_value (if (not (nil? prices))
+                      (:max-price prices)
+                      10000)]
+      (reset! min-price min_value)
+      (reset! max-price max_value)
+      [:> Slider {:min             min_value
+                  :max             max_value
+                  :default-value   [@min-price @max-price]
+                  :range           true
+                  :allow-cross     false
+                  :on-after-change (fn [[new_min new_max]]
+                                     (if (= new_min min)
+                                       (reset! min-price min)
+                                       (reset! min-price new_min))
+                                     (if (= new_max max)
+                                       (reset! max-price max)
+                                       (reset! max-price new_max))
+                                     (rf/dispatch [:get-similar (:id product) @filter-by @min-price @max-price]))}])]])
 
 ;package-size, type, subtype, country, package-type
 (defn filter-similar
-  [filter-by min-price max-price product min max]
+  [filter-by min-price max-price product prices]
   [:div {:class "flex flex-row flex-wrap justify-center mt-10"}
    [:> funnel-icon {:style {:height        "1.5rem" ; :> creates a Reagent component from a React one
                             :width         "1.5rem"
@@ -51,7 +58,7 @@
                :on-change (fn [e] (if (.-checked e.target)
                                     (swap! filter-by assoc key true)
                                     (swap! filter-by dissoc key))
-                            (rf/dispatch [:get-product (:id product) @filter-by @min-price @max-price]))}]
+                            (rf/dispatch [:get-similar (:id product) @filter-by @min-price @max-price]))}]
       [:span {:class "ml-1.5 pt-0.5"}
        (key product)]]) 
-   #_(price-slider product min-price max-price filter-by min max)])
+   (price-slider product min-price max-price filter-by prices)])

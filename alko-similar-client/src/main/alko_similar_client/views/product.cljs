@@ -110,8 +110,11 @@
 
 (defn product-info
   []
-  (let [product @(rf/subscribe [:product])]
-    (when (some? product)
+  (let [product @(rf/subscribe [:product])
+        similar @(rf/subscribe [:similar])
+        prices  @(rf/subscribe [:prices])]
+    (when (and (some? product)
+               (some? similar))
       (let [{:keys [id
                     name
                     description
@@ -124,17 +127,18 @@
                     label-info
                     grapes
                     alcohol-percentage
-                    image
-                    similar]} product
-            prices   (->> (:similar product)
-                          (map #(get % "price"))
+                    image]} product
+            prices-parsed (->> similar
+                          (map #(:price %))
                           (map #(js/parseFloat %)))
-            min      (->> prices
+            min      (->> prices-parsed
                           (apply min)
                           (js/Math.floor))
-            max      (->> prices
+            max      (->> prices-parsed
                           (apply max)
                           (js/Math.round))]
+        (when (nil? prices)
+          (rf/dispatch [:set-prices min max]))
         [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) "" " hidden"))}
          [:div {:class "flex flex-row justify-center"}
           [:div {:class "max-w-[70%]"}
@@ -152,5 +156,5 @@
            (product-link id)]
           [:img {:class "max-h-60 ml-8 max-w-[70%]"
                  :src    image}]]
-         (product-filter/filter-similar filter-by min-price max-price product min max)
-         (similar/product-similar similar filter-by)]))))
+         (product-filter/filter-similar filter-by min-price max-price product prices)
+         (similar/product-similar similar filter-by min-price max-price)]))))

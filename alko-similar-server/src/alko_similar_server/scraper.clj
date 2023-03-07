@@ -34,6 +34,7 @@
          :T :package-type
          :V :alcohol-percentage
          :AD :ean})
+       (drop 4)
        (remove nil?)))
 
 (defn scrape-data []
