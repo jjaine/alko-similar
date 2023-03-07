@@ -4,9 +4,13 @@
             [clojure.string :as string]
             ["@heroicons/react/24/outline/ReceiptPercentIcon" :as percent-icon]
             [alko-similar-client.views.similar :as similar]
+            [alko-similar-client.views.filter :as product-filter]
             [alko-similar-client.views.colors :refer [color-variants]]))
 
 (def id (r/atom ""))
+(def filter-by (r/atom {}))
+(def min-price (r/atom nil))
+(def max-price (r/atom nil))
 
 (defn product-name
   [name]
@@ -121,7 +125,16 @@
                     grapes
                     alcohol-percentage
                     image
-                    similar]} product]
+                    similar]} product
+            prices   (->> (:similar product)
+                          (map #(get % "price"))
+                          (map #(js/parseFloat %)))
+            min      (->> prices
+                          (apply min)
+                          (js/Math.floor))
+            max      (->> prices
+                          (apply max)
+                          (js/Math.round))]
         [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) "" " hidden"))}
          [:div {:class "flex flex-row justify-center"}
           [:div {:class "max-w-[70%]"}
@@ -139,4 +152,5 @@
            (product-link id)]
           [:img {:class "max-h-60 ml-8 max-w-[70%]"
                  :src    image}]]
-         (similar/product-similar similar)]))))
+         (product-filter/filter-similar filter-by min-price max-price product min max)
+         (similar/product-similar similar filter-by)]))))

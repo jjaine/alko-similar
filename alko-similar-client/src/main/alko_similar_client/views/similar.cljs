@@ -1,7 +1,9 @@
 (ns alko-similar-client.views.similar
   (:require [clojure.walk :as walk]
             [clojure.string :as string]
-            [alko-similar-client.views.colors :refer [color-variants]]))
+            [re-frame.core :as rf]
+            [alko-similar-client.views.colors :refer [color-variants]]
+            [alko-similar-client.views.filter :refer [clear-filters]]))
 
 (defn similar-name
   [name] 
@@ -73,11 +75,22 @@
     [:div {:class "bg-globe h-6 w-6 ml-2 mr-1 my-auto"}]
     [:p {:class "border border-gray-300 py-1 px-2 pl my-1 mr-1 text-xs font-locator"} country]]])
 
-;package-size, type, subtype, country, package-type
+(defn similar-link
+  [id]
+  (let [alko-url "https://www.alko.fi/tuotteet/"]
+  [:div {:class "flex flex-col content-center flex-wrap border-t border-gray-300"}
+   [:div {:class "flex flex-row content-center"
+          :key id
+          :on-click (fn [e] (.stopPropagation e))}
+    [:div {:class "bg-search h-6 w-6 mr-2 my-auto"}]
+    [:a {:class "py-1 px-2 pl my-1 mr-1 text-sm font-locator underline"
+         :href (str alko-url id)
+         :target "_blank"}
+     "alko.fi"]]]))
 
 (defn product-similar
-  [similar]
-  [:div {:class "flex flex-row flex-wrap justify-center mt-10"}
+  [similar filter-by]
+  [:div {:class "flex flex-row flex-wrap justify-center"}
    (for [similar-product similar]
      (let [similar-keywords (walk/keywordize-keys similar-product)
            {:keys [id
@@ -89,22 +102,23 @@
                    country
                    image
                    score
-                   product-score]} similar-keywords
-           alko-url "https://www.alko.fi/tuotteet/"]
-       [:a {:class  "flex flex-col w-36 border border-gray-300 m-1 justify-between"
-            :href   (str alko-url id)
-            :target "_blank"
-            :key    id}
+                   product-score]} similar-keywords]
+       [:div {:class  "flex flex-col w-36 border border-gray-300 m-1 justify-between cursor-pointer"
+              :on-click #(do (clear-filters)
+                             (reset! filter-by {})
+                             (rf/dispatch [:get-product id]))
+              :key id}
         [:div
          (similar-score score product-score)
          (similar-type type subtype beer-type)
          (similar-name name)]
         [:div
          (similar-country country)
-         [:div {:class "flex flex-col relative"} 
+         [:div {:class "flex flex-col relative"}
           [:div {:class "flex flex-col absolute right-0 px-2 py-1 mr-2 bg-gray-100/80 rounded-lg space-y-[-0.5rem]"}
            (similar-price price)
            (similar-package-size package-size)]
           [:div {:class "flex flex-col items-center h-[15rem] justify-end flex-wrap"}
            [:img {:class "max-h-[15rem] max-w-[8rem] object-contain pb-2 px-1"
-                  :src   image}]]]]]))])
+                  :src   image}]]
+          (similar-link id)]]]))])

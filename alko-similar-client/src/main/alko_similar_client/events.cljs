@@ -1,5 +1,6 @@
 (ns alko-similar-client.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
+            [clojure.string :as string]
             [ajax.core :as ajax]
             [day8.re-frame.http-fx]))
 
@@ -9,14 +10,30 @@
 
 (reg-event-fx
  :get-product
- (fn [{:keys [db]} [_ id]]
-   (js/console.log "get-product" id)
-   {:db (assoc-in db [:loading :product] true)
-    :http-xhrio {:method :get
-                 :uri (str products-endpoint id)
-                 :response-format (ajax/json-response-format {:keyword? true})
-                 :on-success [:get-product-success]
-                 :on-failure [:endpoint-request-error :get-product]}}))
+ (fn [{:keys [db]} [_ id filter-by min-price max-price]]
+   (js/console.log "get-product" id min-price max-price)
+   (let [filter-by-values (->> filter-by
+                               keys
+                               (map name)
+                               (string/join ","))
+         filter-by-url    (when (not (string/blank? filter-by-values))
+                            (str "filter-by=" filter-by-values))
+         min-price-url    (when (not (or (nil? min-price)
+                                         (= min-price 0)))
+                            (str "min-price=" min-price))
+         max-price-url    (when (not (or (nil? max-price)  
+                                         (= max-price js/Number.MAX_SAFE_INTEGER)))
+                            (str "max-price=" max-price))
+         parameters       (string/join "&" (remove nil? [filter-by-url min-price-url max-price-url]))
+         parameters-url   (when (not (string/blank? parameters))
+                            (str "?" parameters))]
+     (js/console.log "get-product" id parameters-url)
+     {:db         (assoc-in db [:loading :product] true)
+      :http-xhrio {:method          :get
+                   :uri             (str products-endpoint id parameters-url)
+                   :response-format (ajax/json-response-format {:keyword? true})
+                   :on-success      [:get-product-success]
+                   :on-failure      [:endpoint-request-error :get-product]}})))
 
 (reg-event-db
  :reset-product

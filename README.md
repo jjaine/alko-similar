@@ -1,5 +1,7 @@
 # Alko similar recommender
 
+Running at [alko-similar.dy.fi](http://alko-similar.dy.fi).
+
 Made as the project for the Fullstack Open course. Log of hours used in [hours.md](hours.md).
 
 ## Server

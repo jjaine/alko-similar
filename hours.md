@@ -23,4 +23,5 @@
 | 06.03.2023 | 1     | change dockerfiles to use multi-stage builds for different platforms, add label info to product view |
 |            | 1     | add more product info, separate views into different files |
 |            | 3     | show similar products |
-| total      | 71    | | 
+| 07.03.2023 | 6     | implement filtering |
+| total      | 77    | | 
