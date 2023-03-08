@@ -92,12 +92,18 @@
   (if-let [id (-> request
                   :path-params
                   :product-id)]
-    (if-let [selected (->> (filter (comp #{id} :id) @scraper/data)
-                           first)]
-      (let [img-url           (generate-image-url selected)
-            response          (assoc selected :image img-url)]
-        (rr/response response))
-      (rr/not-found [(str "Tuotetta " id " ei löytynyt")]))
+    (let [selected-by-id  (-> (filter (comp #{id} :id) @scraper/data)
+                              first)
+          selected-by-ean (-> (filter (comp #{id} :ean) @scraper/data)
+                              first)
+          selected        (if (nil? selected-by-id)
+                            selected-by-ean
+                            selected-by-id)]
+      (if (nil? selected)
+        (rr/not-found [(str "Tuntematon tuote!")])
+        (let [img-url  (generate-image-url selected)
+              response (assoc selected :image img-url)]
+          (rr/response response)))) 
     (rr/not-found ["Anna tuotenumero!"])))
 
 (defn get-similars
@@ -106,45 +112,55 @@
   (if-let [id (-> request
                   :path-params
                   :product-id)]
-    (if-let [selected (->> (filter (comp #{id} :id) @scraper/data)
-                           first)]
-      (let [filter-parameters (-> request
-                                  :query-params
-                                  (get "filter-by"))
-            parameters        (if (-> filter-parameters
-                                      nil?
-                                      not)
-                                (->> (-> filter-parameters
-                                         (clojure.string/split #","))
-                                     (map keyword))
-                                [])
-            min-price-param   (-> request
-                                  :query-params
-                                  (get "min-price"))
-            min-price         (if (-> min-price-param
-                                      nil?
-                                      not)
-                                (Float/parseFloat min-price-param)
-                                nil)
-            max-price-param   (-> request
-                                  :query-params
-                                  (get "max-price"))
-            max-price         (if (-> max-price-param
-                                      nil?
-                                      not)
-                                (Float/parseFloat max-price-param)
-                                nil)
-            similar           (get-similar selected parameters min-price max-price)]
-        (rr/response {:similar similar}))
-      (rr/not-found [(str "Product not found with id " id)]))
+    (let [selected-by-id  (-> (filter (comp #{id} :id) @scraper/data)
+                              first)
+          selected-by-ean (-> (filter (comp #{id} :ean) @scraper/data)
+                              first)
+          selected        (if (nil? selected-by-id)
+                            selected-by-ean
+                            selected-by-id)]
+      (if (nil? selected)
+        (rr/not-found [(str "Product not found with id " id)])
+        (let [filter-parameters (-> request
+                                    :query-params
+                                    (get "filter-by"))
+              parameters        (if (-> filter-parameters
+                                        nil?
+                                        not)
+                                  (->> (-> filter-parameters
+                                           (clojure.string/split #","))
+                                       (map keyword))
+                                  [])
+              min-price-param   (-> request
+                                    :query-params
+                                    (get "min-price"))
+              min-price         (if (-> min-price-param
+                                        nil?
+                                        not)
+                                  (Float/parseFloat min-price-param)
+                                  nil)
+              max-price-param   (-> request
+                                    :query-params
+                                    (get "max-price"))
+              max-price         (if (-> max-price-param
+                                        nil?
+                                        not)
+                                  (Float/parseFloat max-price-param)
+                                  nil)
+              similar           (get-similar selected parameters min-price max-price)]
+          (rr/response {:similar similar}))))
     (rr/not-found ["No product id given"])))
 
 (comment
   (get-details {:path-params {:product-id "942617"}})
-
-  (get-details {:path-params {}})
+  (get-details {:path-params {:product-id "568238"}})
+  (get-details {:path-params {:product-id "3504040120133"}})
+  (get-details {:path-params {:product-id "350404012013"}})
+  (get-details {:path-params {:product-id "4976879987307"}})
+  (get-details {:path-params {}}) 
 
   (get-similars {:path-params {:product-id "942617"}})
+  (get-similars {:path-params {:product-id "4976879987307"}})
 
   (get-similars {:path-params {:product-id "942617"}
                  :query-params {"filter-by" "country"

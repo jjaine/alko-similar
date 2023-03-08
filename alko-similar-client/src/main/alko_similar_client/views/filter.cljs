@@ -2,7 +2,8 @@
   (:require ["@heroicons/react/24/outline/FunnelIcon" :as funnel-icon]
             ["@heroicons/react/24/outline/CurrencyEuroIcon" :as euro-icon]
             ["rc-slider$default" :as Slider]
-            [re-frame.core :as rf]))
+            [re-frame.core :as rf]
+            [clojure.string :as string]))
 
 (defn clear-filters 
   []
@@ -62,15 +63,26 @@
                              :margin-right  "0.5rem"
                              :margin-top    "auto"
                              :margin-bottom "auto"}}]
-    (for [key [:type :subtype :country :package-type :package-size]]
-      [:label {:class "text-sm font-locator font-thin my-1 mr-2 py-1 px-2 flex flex-row content-center border border-gray-300"
-               :key key}
-       [:input {:type "checkbox"
-                :on-change (fn [e] (if (.-checked e.target)
-                                     (swap! filter-by assoc key true)
-                                     (swap! filter-by dissoc key))
-                             (rf/dispatch [:get-similar (:id product) @filter-by @min-price @max-price]))}]
-       [:span {:class "ml-1.5 pt-0.5"}
-        (key product)]])]
+    (let [type        (if (nil? (:type product))
+                        ""
+                        (:type product))
+          subtype     (if (nil? (:subtype product))
+                        ""
+                        (:subtype product))
+          filter-keys (if (or (string/blank? subtype)
+                              (= (string/lower-case type)
+                                 (string/lower-case subtype)))
+                        [:type :country :package-type :package-size]
+                        [:type :subtype :country :package-type :package-size])]
+      (for [key filter-keys]
+        [:label {:class "text-sm font-locator font-thin my-1 mr-2 py-1 px-2 flex flex-row content-center border border-gray-300"
+                 :key   key}
+         [:input {:type      "checkbox"
+                  :on-change (fn [e] (if (.-checked e.target)
+                                       (swap! filter-by assoc key true)
+                                       (swap! filter-by dissoc key))
+                               (rf/dispatch [:get-similar (:id product) @filter-by @min-price @max-price]))}]
+         [:span {:class "ml-1.5 pt-0.5"}
+          (key product)]]))]
    [:div {:class "flex flex-row flex-wrap"}
     (price-slider product min-price max-price filter-by prices)]])

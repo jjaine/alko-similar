@@ -14,6 +14,8 @@
                       (rf/dispatch [:reset-product])
                       (rf/dispatch [:reset-similar])
                       (rf/dispatch [:reset-prices])
+                      (rf/dispatch [:set-scanner false])
+                      (reset! home/show-scanner false)
                       (rf/dispatch [:reset-errors]))}]])
 
 (defn app []

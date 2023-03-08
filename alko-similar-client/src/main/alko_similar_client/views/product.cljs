@@ -18,24 +18,29 @@
 
 (defn product-type
   [type subtype beer-type]
-  (let [subtype-key (if (string/blank? subtype)
-                      beer-type
-                      subtype)
+  (let [subtype-selected        (if (string/blank? subtype)
+                                  beer-type
+                                  subtype)
+        subtype-key             (if (string/blank? subtype-selected)
+                                  type
+                                  subtype-selected)
         subtype-color-processed (->> (-> subtype-key
                                          (string/lower-case)
                                          (string/split #" "))
                                      (string/join "_"))
-        subtype-color-key (-> (if (= type "viskit")
-                                (str subtype-color-processed "_viskit")
-                                subtype-color-processed)
-                              keyword)
-        subtype-color (get color-variants subtype-color-key)
-        color (if (some? subtype-color)
-                subtype-color
-                "bg-gray-800")]
+        subtype-color-key       (-> (if (= type "viskit")
+                                      (str subtype-color-processed "_viskit")
+                                      subtype-color-processed)
+                                    keyword)
+        subtype-color           (get color-variants subtype-color-key)
+        color                   (if (some? subtype-color)
+                                  subtype-color
+                                  "bg-gray-800 text-white")]
     [:div {:class "flex flex-row flex-wrap"}
      [:p {:class "border border-gray-300 py-1 px-2 pl my-1 mr-1 text-sm font-locator"} (string/capitalize type)]
-     [:p {:class (str "border py-1 px-2 my-1 text-sm font-locator " color)} (string/capitalize subtype-key)]]))
+     (when (and (some? subtype-selected)
+                (not= (string/lower-case type)
+                      (string/lower-case subtype-selected))) [:p {:class (str "border py-1 px-2 my-1 text-sm font-locator " color)} (string/capitalize subtype-key)])]))
 
 (defn product-price
   [price]
@@ -140,7 +145,7 @@
         (when (or (nil? prices)
                   (not= id (:product-id prices)))
           (rf/dispatch [:set-prices min max id])) 
-        [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) "" " hidden"))}
+        [:div {:class "max-w-screen-lg h-screen mx-auto p-4"}
          [:div {:class "flex flex-row justify-center mb-10"}
           [:div {:class "max-w-[70%]"}
            [:div {:class "flex flex-row place-content-between"}

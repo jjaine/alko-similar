@@ -17,6 +17,11 @@
    (:prices db)))
 
 (reg-sub
+ :scanner
+ (fn [db _]
+   (:scanner db)))
+
+(reg-sub
  :errors
   (fn [db _]
     (:errors db)))

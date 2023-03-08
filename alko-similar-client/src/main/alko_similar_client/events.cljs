@@ -53,6 +53,11 @@
                                 :min-price  min-price
                                 :max-price  max-price})}))
 
+(reg-event-fx
+ :set-scanner
+ (fn [{:keys [db]} [_ show]]
+   {:db (assoc-in db [:scanner] show)}))
+
 (reg-event-db
  :reset-product
  (fn [db _]
@@ -113,6 +118,9 @@
  :endpoint-request-error
  (fn [db [_ request-type response]]
    (js/console.log "endpoint-request-error" request-type response)
-   (-> db
-       (assoc-in [:errors request-type] (first (get response :response)))
-       (assoc-in [:loading request-type] false))))
+   (let [res (first (get response :response))]
+     (-> db
+         (assoc-in [:errors request-type] (if (nil? res)
+                                            "Tuntematon tuote!"
+                                            res))
+         (assoc-in [:loading request-type] false)))))

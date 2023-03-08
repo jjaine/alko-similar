@@ -11,21 +11,23 @@
 
 (defn similar-type
   [type subtype beer-type]
-  (let [subtype-key (if (string/blank? subtype)
-                      beer-type
-                      subtype)
+  (let [subtype-key             (if (string/blank? subtype)
+                                  (if (string/blank? beer-type)
+                                    type
+                                    beer-type)
+                                  subtype)
         subtype-color-processed (->> (-> subtype-key
                                          (string/lower-case)
                                          (string/split #" "))
                                      (string/join "_"))
-        subtype-color-key (-> (if (= type "viskit")
-                                (str subtype-color-processed "_viskit")
-                                subtype-color-processed)
-                              keyword)
-        subtype-color (get color-variants subtype-color-key)
-        color (if (some? subtype-color)
-                subtype-color
-                "bg-gray-800")]
+        subtype-color-key       (-> (if (= type "viskit")
+                                      (str subtype-color-processed "_viskit")
+                                      subtype-color-processed)
+                                    keyword)
+        subtype-color           (get color-variants subtype-color-key)
+        color                   (if (some? subtype-color)
+                                  subtype-color
+                                  "bg-gray-800 text-white")]
     [:div {:class "flex flex-col"}
      [:p {:class (str "py-1 px-2 text-[0.65rem] text-center font-locator " color)} (string/capitalize subtype-key)]
      [:p {:class "border-b border-gray-300 py-1 px-2 pl text-[0.65rem] text-center font-locator"} (string/capitalize type)]
