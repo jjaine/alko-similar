@@ -1,5 +1,7 @@
 (ns alko-similar-client.views.home
   (:require ["@heroicons/react/24/outline/ExclamationTriangleIcon" :as error-icon]
+            ["@heroicons/react/24/outline/MagnifyingGlassIcon" :as search-icon]
+            ["@heroicons/react/24/outline/CameraIcon" :as camera-icon]
             [re-frame.core :as rf]
             [clojure.string :as string]
             [alko-similar-client.views.product :as product]))
@@ -16,29 +18,38 @@
   (let [product @(rf/subscribe [:product])
         errors  @(rf/subscribe [:errors])
         error   (get errors :get-product)]
-    [:div {:class (str "max-w-screen-lg h-screen mx-auto p-4" (if (some? product) " hidden" ""))}
-     [:div {:class "w-full h-1/4 shadow-lg rounded-xl bg-yellow-300 flex flex-col justify-center items-center"}
-      [:div {:class "w-5/6 h-1/2 flex flex-row justify-center items-center"}
-       [:div {:class "w-4/6 h-full flex flex-col"}
-        [:input {:class       "w-1/2 h-4 rounded-xl p-4 m-4"
+    [:div {:class (str "h-screen" (if (some? product) " hidden" ""))}
+     [:div {:class "shadow-lg bg-alko-gray flex flex-col justify-center items-center"}
+      [:div {:class "py-6 h-40"}
+       [:div {:class "flex flex-row items-center"}
+        [:div {:class "cursor-pointer relative left-14 w-14 h-12"
+               :on-click #(do (rf/dispatch [:reset-errors])
+                              (reset! product/id "")
+                              (js/console.log "camera"))}
+         [:div {:class "border-r border-gray-300 h-7 pl-4 my-[0.625rem] flex items-center"}
+          [:> camera-icon {:style {:height       "1.75rem" ; :> creates a Reagent component from a React one
+                                   :width        "1.75rem"
+                                   :color        "#333333"}}]]]
+        [:input {:class       "w-[25rem] h-4 rounded-xl py-6 pr-6 pl-[4.2rem] my-4"
                  :type        "text"
-                 :placeholder "Paste alko.fi URL or product id"
+                 :placeholder "Tuotteen numero tai alko.fi-linkki"
                  :value       @product/id
-                 :on-change   (fn [val] (reset! product/id (parse-id (.-value (.-target val)))))}]
-        [:div {:class (str "w-1/2 h-1/2 flex flex-row" (if (some? error) "" " hidden"))}
-         [:> error-icon {:style {:height       "1.75rem" ; :> creates a Reagent component from a React one
-                                 :width        "1.75rem"
-                                 :margin-left  "1rem"
-                                 :margin-right "0.5rem"
-                                 :color        "#d00000"}}]
-         [:p {:style {:height "2rem"
-                      :color  "#d00000"}} error]]]
-       [:div {:class "w-2/6 h-full flex flex-col"}
-        [:input {:class    "w-full h-4 rounded-xl p-4 m-4 bg-blue-200"
-                 :type     "button"
-                 :value    "Search"
-                 :on-click #(do (rf/dispatch [:get-product @product/id])
-                                (rf/dispatch [:get-similar @product/id]))}]]]]
-     [:div {:class "w-full h-1/4 shadow-lg rounded-xl bg-red-300 flex flex-col justify-center items-center"}
-      [:button {:class "w-1/4 h-1/4 rounded-xl p-4 bg-blue-300"}
-       "Use camera to scan barcode"]]]))
+                 :on-change   (fn [val] (reset! product/id (parse-id (.-value (.-target val)))))
+                 :on-key-down (fn [e] (when (= 13 (.-keyCode e))
+                                        (rf/dispatch [:get-product @product/id])
+                                        (rf/dispatch [:get-similar @product/id])))}]
+        [:div {:class "cursor-pointer relative right-14 w-14 h-12"
+               :on-click #(do (rf/dispatch [:get-product @product/id])
+                              (rf/dispatch [:get-similar @product/id]))}
+         [:div {:class "border-l border-gray-300 h-7 pl-3 my-[0.625rem] flex items-center"}
+          [:> search-icon {:style {:height       "1.75rem" ; :> creates a Reagent component from a React one
+                                   :width        "1.75rem"
+                                   :color        "#333333"}}]]]]
+       [:div {:class (str "flex flex-row w-80 ml-[4.7rem]" (if (some? error) "" " hidden"))}
+        [:> error-icon {:style {:height       "1.75rem" ; :> creates a Reagent component from a React one
+                                :width        "1.75rem"
+                                :margin-left  "1rem"
+                                :margin-right "0.5rem"
+                                :color        "#ffffff"}}]
+        [:p {:style {:height "2rem"
+                     :color  "#ffffff"}} error]]]]]))

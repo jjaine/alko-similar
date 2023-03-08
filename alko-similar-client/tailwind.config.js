@@ -48,7 +48,7 @@ module.exports = {
         tastestyle_445: '#6cc24a',
         tastestyle_447: '#0085ad',
         tastestyle_449: '#ea0437',
-        'regal-blue': '#243c5a',
+        'alko-gray': '#2a2a2a',
       },
       fontFamily: {
         'locator': ['locator-web', 'sans-serif'],

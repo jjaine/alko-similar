@@ -97,8 +97,8 @@
       (let [img-url           (generate-image-url selected)
             response          (assoc selected :image img-url)]
         (rr/response response))
-      (rr/not-found [(str "Product not found with id " id)]))
-    (rr/not-found ["No product id given"])))
+      (rr/not-found [(str "Tuotetta " id " ei löytynyt")]))
+    (rr/not-found ["Anna tuotenumero!"])))
 
 (defn get-similars
   [request]

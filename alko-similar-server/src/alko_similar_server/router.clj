@@ -51,8 +51,8 @@
                                   :get     {:parameters {:path {:product-id string?}
                                                          :query (s/keys :opt-un [::filter-by ::min-price ::max-price])}
                                             :handler    product/get-similars}}]
-     ["/api/product/" {:get {:handler (fn [_] (rr/not-found ["No product id given"]))}}]
-     ["/api/similar/" {:get {:handler (fn [_] (rr/not-found ["No product id given"]))}}]
+     ["/api/product/" {:get {:handler (fn [_] (rr/not-found ["Anna tuotenumero!"]))}}]
+     ["/api/similar/" {:get {:handler (fn [_] (rr/not-found ["Anna tuotenumero!"]))}}]
      ["/scrape" {:summary "Scrape the alko website"
                  :get     {:handler (fn [_] (let [res (scraper/scrape-data)]
                                               res))}}]
