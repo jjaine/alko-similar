@@ -17,7 +17,7 @@
 (def swagger-docs
   ["/swagger.json"
    {:get {:no-doc true
-          :swagger {:basePath "/"
+          :swagger {:basePath "/docs"
                     :info {:title "Alko Similar API"
                            :description "API for the alko similar project"
                            :version "1.0.0"}}

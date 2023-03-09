@@ -37,6 +37,6 @@ ClojureScript client that provides the users possibility to search for similar p
 # Development
 Use `docker compose -f docker-compose.dev.yml up --build` to build newest versions of the containers and run the development environment.
 
-Connect to the server REPL running at `localhost:40000` and use the `(reset)` in `user.clj` to start the server. Then use `(scrape-data)` in `scraper.clj` to scrape the most up-to-date data to the server. The API can be viewed and tested at `http://localhost:3000/docs/`.
+Connect to the server REPL running at `localhost:40000` and use the `(reset)` in `user.clj` to start the server. You can use VS Code with [Calva](https://calva.io) for example! Then use `(scrape-data)` in `scraper.clj` to scrape the most up-to-date data to the server. The API can be viewed and tested at `http://localhost:3000/docs/`.
 
 The client is running at `http://localhost:3001` in development mode.

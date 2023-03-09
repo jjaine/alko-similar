@@ -26,5 +26,5 @@
 | 07.03.2023 | 6     | implement filtering |
 |            | 3     | separate similars query in API, make price slider filter work, style slider |
 | 08.03.2023 | 6     | styling the front page, implement barcode scanning & searching |
-| 09.03.2023 | 8     | setup nginx as reverse proxy with https support |
-| total      | 94    | | 
+| 09.03.2023 | 9     | setup nginx as reverse proxy with https support |
+| total      | 95    | | 
