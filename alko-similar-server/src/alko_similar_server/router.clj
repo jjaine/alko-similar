@@ -15,7 +15,7 @@
             [ring.middleware.cors :refer [wrap-cors]]))
 
 (def swagger-docs
-  ["/swagger.json"
+  ["/docs/swagger.json"
    {:get {:no-doc true
           :swagger {:basePath "/docs"
                     :info {:title "Alko Similar API"
@@ -58,7 +58,9 @@
                                                   res))}}]
      ["/api/health" {:summary "Is the server running?"
                      :get     {:handler (fn [_] (rr/response nil))}}]
-     ["/api/" {:get {:handler (fn [_] (rr/not-found ["Endpoint not found"]))}}]]
+     ["/api/" {:get {:handler (fn [_] (rr/not-found ["Endpoint not found"]))}}]
+     ["/" {:get {:handler (fn [_] (rr/not-found ["Endpoint not found"]))}}]]
     router-config)
    (ring/routes
-    (swagger-ui/create-swagger-ui-handler {:path "/docs"}))))
+    (swagger-ui/create-swagger-ui-handler {:path "/docs"
+                                           :url "/docs/swagger.json"}))))
