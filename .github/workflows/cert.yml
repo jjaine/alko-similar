@@ -1,8 +1,8 @@
-name: Scheduled tasks
+name: Cert renewal check
 
 on:
   schedule:
-    - cron: "2 2 * * *"
+    - cron: "0 */12 * * *"
 
 jobs:
   health-check:
@@ -17,16 +17,15 @@ jobs:
         max-attempts: 3 # Optional, defaults to 1
         # Delay between retries
         retry-delay: 10s # Optional, only applicable to max-attempts > 1
-  scrape:
+  renew-check:
     runs-on: ubuntu-latest
     needs: health-check
     steps:
-    - name: Scrape
-      uses: jtalk/url-health-check-action@v3
-      with:
-        # Check the following URLs one by one sequentially
-        url: https://${{ secrets.INSTANCE_IP }}/api/scrape
-        # Fail this action after this many failed attempts
-        max-attempts: 3 # Optional, defaults to 1
-        # Delay between retries
-        retry-delay: 10s # Optional, only applicable to max-attempts > 1
+      - name: 'Run cert renewal check'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.INSTANCE_IP }}
+          username: ${{ secrets.INSTANCE_USERNAME }}
+          key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+          script: |
+            docker compose run --rm certbot renew

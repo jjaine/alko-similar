@@ -1,10 +1,10 @@
 # Alko similar recommender
 
-Running at [alko-similar.dy.fi](http://alko-similar.dy.fi).
+Running at [alko-similar.dy.fi](https://alko-similar.dy.fi).
 
 Made as the project for the Fullstack Open course. Log of hours used in [hours.md](hours.md).
 
-## Server
+# Server
 Clojure server that provides API endpoints for server health check and to fetch information about similar products.
 
 ### API endpoints
@@ -15,13 +15,28 @@ Clojure server that provides API endpoints for server health check and to fetch 
 | Name | Description | Type | Example |
 |------|-------------|------|---------|
 | product-id | Product id in Alko's catalog | string (path) | [000132](https://www.alko.fi/tuotteet/000132) |
+
+`/api/similar/{product-id}` Get similar products to product with id.
+
+**Parameters**
+
+| Name | Description | Type | Example |
+|------|-------------|------|---------|
+| product-id | Product id in Alko's catalog | string (path) | [000132](https://www.alko.fi/tuotteet/000132) |
 | filter-by  | Filter similar products by parameters<br>(package-size, type, subtype, country, package-type) | string (query) | "country,type" |
 | min-price  | | float (query) | 10.0 |
 | min-price  | | float (query) | 40.0 |
 
-`/scrape` Scrape the alko website to update product database.
+`/api/scrape` Scrape the alko website to update product database.
 
-`/health` Check if the server running.
+`/api/health` Check if the server running.
 
-## Client
-TODO
+# Client
+ClojureScript client that provides the users possibility to search for similar products to other Alko products either by id, URL or by using the camera to scan the product's EAN code.
+
+# Development
+Use `docker compose -f docker-compose.dev.yml up --build` to build newest versions of the containers and run the development environment.
+
+Connect to the server REPL running at `localhost:40000` and use the `(reset)` in `user.clj` to start the server. Then use `(scrape-data)` in `scraper.clj` to scrape the most up-to-date data to the server. The API can be viewed and tested at `http://localhost:3000/docs/`.
+
+The client is running at `http://localhost:3001` in development mode.

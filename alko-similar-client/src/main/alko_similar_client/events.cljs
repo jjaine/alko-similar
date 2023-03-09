@@ -4,7 +4,7 @@
             [ajax.core :as ajax]
             [day8.re-frame.http-fx]))
 
-(goog-define URL "http://alko-similar.dy.fi:3000")
+(goog-define URL "https://alko-similar.dy.fi")
 
 (def products-endpoint (str URL "/api/product/"))
 (def similars-endpoint (str URL "/api/similar/"))

@@ -53,11 +53,12 @@
                                             :handler    product/get-similars}}]
      ["/api/product/" {:get {:handler (fn [_] (rr/not-found ["Anna tuotenumero!"]))}}]
      ["/api/similar/" {:get {:handler (fn [_] (rr/not-found ["Anna tuotenumero!"]))}}]
-     ["/scrape" {:summary "Scrape the alko website"
-                 :get     {:handler (fn [_] (let [res (scraper/scrape-data)]
-                                              res))}}]
-     ["/health" {:summary "Is the server running?"
-                 :get     {:handler (fn [_] (rr/response nil))}}]]
+     ["/api/scrape" {:summary "Scrape the alko website"
+                     :get     {:handler (fn [_] (let [res (scraper/scrape-data)]
+                                                  res))}}]
+     ["/api/health" {:summary "Is the server running?"
+                     :get     {:handler (fn [_] (rr/response nil))}}]
+     ["/api/" {:get {:handler (fn [_] (rr/not-found ["Endpoint not found"]))}}]]
     router-config)
    (ring/routes
-    (swagger-ui/create-swagger-ui-handler {:path "/"}))))
+    (swagger-ui/create-swagger-ui-handler {:path "/docs"}))))
