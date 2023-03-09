@@ -42,7 +42,7 @@
 (deftest health-route-test
   (testing "Health route test"
     (is (= {:status 200 :headers {} :body nil}
-           (test-endpoint "/health")))
+           (test-endpoint "/api/health")))
     (is (= nil
            (-> (test-endpoint "wrong-url")
                :status)))))
@@ -71,7 +71,7 @@
       (is (> (count similar) 0)))))
 
 (comment
-  (test-endpoint "/health")
+  (test-endpoint "/api/health")
   (test-endpoint "/wrong-url")
   (test-endpoint "/api/product/915083")
   
