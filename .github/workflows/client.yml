@@ -75,7 +75,15 @@ jobs:
           key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
           source: "docker-compose.yml"
           target: "~"
-      - name: 'Stop old instance, pull new image, start again'
+      - name: 'Update nginx.conf'
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.INSTANCE_IP }}
+          username: ${{ secrets.INSTANCE_USERNAME }}
+          key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+          source: "nginx-conf/nginx.conf"
+          target: "~/nginx-conf"
+      - name: 'Stop old server, pull new image, start again'
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.INSTANCE_IP }}
