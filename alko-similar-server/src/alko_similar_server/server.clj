@@ -36,6 +36,7 @@
 
 (defmethod ig/init-key :db/postgres
   [_ {:keys [jdbc-url]}]
+  (println "Initializing db connection" jdbc-url)
   (jdbc/with-options
     (njc/->pool HikariDataSource {:jdbcUrl jdbc-url})
     jdbc/snake-kebab-opts))

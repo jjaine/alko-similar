@@ -17,4 +17,5 @@ WORKDIR /app
 
 ENV PORT 3000
 
-CMD JDBC_DATABASE_URL=jdbc_url lein run "resources/config.edn"
+CMD --mount=type=secret,id=jdbc_url \
+    JDBC_DATABASE_URL=$(cat /run/secrets/jdbc_url) lein run "resources/config.edn"

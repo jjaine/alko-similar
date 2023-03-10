@@ -14,15 +14,17 @@ services:
   server:
     image: essijukkala/alko-similar:server
     container_name: server
+    links:
+      - db
   client:
     image: essijukkala/alko-similar:client
     container_name: client
-    depends_on: 
+    links: 
       - server
   nginx:
     image: nginx:latest
     container_name: nginx
-    depends_on: 
+    links: 
       - client
     ports:
       - 80:80
