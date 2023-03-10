@@ -27,5 +27,5 @@
 |            | 3     | separate similars query in API, make price slider filter work, style slider |
 | 08.03.2023 | 6     | styling the front page, implement barcode scanning & searching |
 | 09.03.2023 | 9     | setup nginx as reverse proxy with https support |
-| 10.03.2023 | 6     | integrate postgres as a database for the project |
-| total      | 101   | | 
+| 10.03.2023 | 8     | integrate postgres as a database for the project, setup for both dev and prod |
+| total      | 103   | | 

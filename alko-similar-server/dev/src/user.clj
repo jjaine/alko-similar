@@ -9,7 +9,7 @@
             [alko-similar-server.server]))
 
 (ig-repl/set-prep!
- (fn [] (-> "resources/config.edn"
+ (fn [] (-> "dev/resources/config.edn"
             slurp
             ig/read-string)))
 

@@ -1,6 +1,6 @@
 (defproject alko-similar-server "0.1.0-SNAPSHOT"
   :description "API for finding similar Alko products"
-  :url ""
+  :url "https://alko-similar.dy.fi/docs"
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [ring "1.9.6"]
                  [integrant "0.8.0"]

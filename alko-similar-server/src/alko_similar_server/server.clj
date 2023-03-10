@@ -13,16 +13,12 @@
   (router/routes env))
 
 (defmethod ig/prep-key :server/jetty
-  [_ config]
-  (if-let [env-port (env :port)]
-    (merge config {:port (Integer/parseInt env-port)})
-    config))
+  [_ config] 
+  (merge config {:port (Integer/parseInt (env :port))}))
 
 (defmethod ig/prep-key :db/postgres
   [_ config]
-  (if-let [jdbc-url (env :jdbc-database-url)]
-    (merge config {:jdbc-url jdbc-url})
-    config))
+  (merge config {:jdbc-url (env :jdbc-database-url)}))
 
 (defmethod ig/init-key :server/jetty
   [_ {:keys [handler port]}]
@@ -36,7 +32,6 @@
 
 (defmethod ig/init-key :db/postgres
   [_ {:keys [jdbc-url]}]
-  (println "Configuring db")
   (jdbc/with-options
     (njc/->pool HikariDataSource {:jdbcUrl jdbc-url})
     jdbc/snake-kebab-opts))
@@ -53,14 +48,14 @@
 
 (defn -main
   [config-file]
+  (scraper/scrape-data)
   (let [config (-> config-file
                    slurp
                    ig/read-string)]
-    (scraper/scrape-data)
     (-> config
         ig/prep
         ig/init)))
 
 (comment
-  (-main "resources/config.edn")
+  (-main "resources/config.edn") 
   )

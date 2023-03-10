@@ -14,4 +14,7 @@ COPY . /app
 FROM clojure:lein
 COPY --from=builder /app /app
 WORKDIR /app
-CMD lein run "resources/config.edn"
+
+ENV PORT 3000
+
+CMD JDBC_DATABASE_URL=jdbc_url lein run "resources/config.edn"
