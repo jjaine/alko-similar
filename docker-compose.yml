@@ -14,6 +14,8 @@ services:
   server:
     image: essijukkala/alko-similar:server
     container_name: server
+    environment:
+      - JDBC_DATABASE_URL
     links:
       - db
   client:

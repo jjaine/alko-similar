@@ -73,8 +73,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: essijukkala/alko-similar:server
-          secrets: |
-            "jdbc_url=jdbc:postgresql://db:5432/${{ secrets.PG_DB }}?user=${{ secrets.PG_USER }}&password=${{ secrets.PG_PASSWORD }}"
   deploy:
     name: Deploy docker image
     runs-on: ubuntu-latest
@@ -114,15 +112,17 @@ jobs:
           POSTGRES_USER: ${{ secrets.PG_USER }}
           POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
           POSTGRES_DB: ${{ secrets.PG_DB }}
+          JDBC_DATABASE_URL: jdbc:postgresql://db:5432/${{ secrets.PG_DB }}?user=${{ secrets.PG_USER }}&password=${{ secrets.PG_PASSWORD }}
         with:
           host: ${{ secrets.INSTANCE_IP }}
           username: ${{ secrets.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
-          envs: POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB
+          envs: POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,JDBC_DATABASE_URL
           script: |
             export POSTGRES_USER=$POSTGRES_USER
             export POSTGRES_PASSWORD=$POSTGRES_PASSWORD
             export POSTGRES_DB=$POSTGRES_DB 
+            export JDBC_DATABASE_URL=$JDBC_DATABASE_URL
             docker compose down
             docker compose pull
             docker compose up -d
