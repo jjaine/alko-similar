@@ -84,11 +84,11 @@ jobs:
           source: "nginx-conf/nginx.conf"
           target: "~/nginx-conf"
       - name: 'Stop old server, pull new image, start again'
-        uses: appleboy/ssh-action@master
         env:
           POSTGRES_USER: ${{ secrets.PG_USER }}
           POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
           POSTGRES_DB: ${{ secrets.PG_DB }}
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.INSTANCE_IP }}
           username: ${{ secrets.INSTANCE_USERNAME }}
