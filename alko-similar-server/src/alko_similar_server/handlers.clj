@@ -4,12 +4,6 @@
             [clj-time.core :as t]
             [clj-time.coerce :as tc]))
 
-(defn list-all-products
-  [db]
-  (fn [_request]
-    (let [products (db/get-all-products db)]
-      (rr/response products))))
-
 (defn list-popular-products
   [db]
   (fn [_request]

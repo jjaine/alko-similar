@@ -27,8 +27,10 @@
  (fn [{:keys [_db]} [_ id]]
    {:http-xhrio {:method          :post
                  :uri             update-endpoint
-                 :body            {:id id}
-                 :response-format (ajax/json-response-format {:keyword? true})
+                 :params          {:id id}
+                 :format          (ajax/json-request-format {:keyword? true})
+                 :response-format (ajax/json-response-format {:keyword? true}) 
+                 :on-success      [:log-product-success]
                  :on-failure      [:endpoint-request-error :log-product]}}))
 
 (reg-event-fx
@@ -193,3 +195,9 @@
                                             "Tuntematon tuote!"
                                             res))
          (assoc-in [:loading request-type] false)))))
+
+(reg-event-db
+ :log-product-success
+ (fn [db [_ product]]
+   (js/console.log "log-product-success" product)
+   db))
