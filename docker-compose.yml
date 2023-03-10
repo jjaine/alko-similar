@@ -10,7 +10,7 @@ services:
       - POSTGRES_DB
     volumes:
       - ./alko-similar-db:/var/lib/postgresql/data
-      - ./alko-similar-server/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
   server:
     image: essijukkala/alko-similar:server
     container_name: server

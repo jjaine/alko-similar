@@ -100,6 +100,14 @@ jobs:
           key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
           source: "nginx-conf/nginx.conf"
           target: "~/nginx-conf"
+      - name: 'Update schema.sql'
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.INSTANCE_IP }}
+          username: ${{ secrets.INSTANCE_USERNAME }}
+          key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
+          source: "alko-similar-server/resources/schema.sql"
+          target: "~"
       - name: 'Stop old server, pull new image, start server again'
         uses: appleboy/ssh-action@master
         env:
