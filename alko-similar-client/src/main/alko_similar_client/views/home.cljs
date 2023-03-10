@@ -34,9 +34,12 @@
 (defn search-by-url-or-id
   []
   (let [product @(rf/subscribe [:product])
+        popular @(rf/subscribe [:popular])
+        recent  @(rf/subscribe [:recent])
         errors  @(rf/subscribe [:errors])
         scanner @(rf/subscribe [:scanner])
         error   (get errors :get-product)]
+    (js/console.log "popular" popular "recent" recent)
     (when (nil? product)
       [:div {:class "h-screen"}
        [:div {:class "shadow-lg bg-alko-gray flex flex-col items-center min-h-[10rem]"}
@@ -58,10 +61,12 @@
                    :on-change   (fn [val] (reset! product/id (parse-id (.-value (.-target val)))))
                    :on-key-down (fn [e] (when (= 13 (.-keyCode e))
                                           (rf/dispatch [:get-product @product/id])
-                                          (rf/dispatch [:get-similar @product/id])))}]
+                                          (rf/dispatch [:get-similar @product/id])
+                                          (rf/dispatch [:log-product @product/id])))}]
           [:div {:class    "cursor-pointer relative right-14 w-14 h-12"
                  :on-click #(do (rf/dispatch [:get-product @product/id])
-                                (rf/dispatch [:get-similar @product/id]))}
+                                (rf/dispatch [:get-similar @product/id])
+                                (rf/dispatch [:log-product @product/id]))}
            [:div {:class "border-l border-gray-300 h-7 pl-3 my-[0.625rem] flex items-center"}
             [:> search-icon {:style {:height "1.75rem" ; :> creates a Reagent component from a React one
                                      :width  "1.75rem"

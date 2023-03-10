@@ -1,3 +1,4 @@
 {:server/jetty            {:handler #ig/ref :alko-similar-server/app
                            :port    3000}
- :alko-similar-server/app {}}
+ :alko-similar-server/app {:jbdc-url #ig/ref :db/postgres}
+ :db/postgres             {:jdbc-url "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"}}

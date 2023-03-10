@@ -12,13 +12,19 @@
                       (js/console.log "header")
                       (reset! product/id "")
                       (rf/dispatch [:reset-product])
+                      (rf/dispatch [:reset-popular])
+                      (rf/dispatch [:reset-recent])
                       (rf/dispatch [:reset-similar])
                       (rf/dispatch [:reset-prices])
                       (rf/dispatch [:set-scanner false])
                       (reset! home/show-scanner false)
-                      (rf/dispatch [:reset-errors]))}]])
+                      (rf/dispatch [:reset-errors])
+                      (rf/dispatch [:get-popular])
+                      (rf/dispatch [:get-recent]))}]])
 
 (defn app []
+  (rf/dispatch [:get-popular])
+  (rf/dispatch [:get-recent])
   [:div
    [header]
    [home/search-by-url-or-id]

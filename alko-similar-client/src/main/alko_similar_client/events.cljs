@@ -8,17 +8,48 @@
 
 (def products-endpoint (str URL "/api/product/"))
 (def similars-endpoint (str URL "/api/similar/"))
+(def populars-endpoint (str URL "/api/products/popular"))
+(def recents-endpoint (str URL "/api/products/recent"))
+(def update-endpoint (str URL "/api/products"))
 
 (reg-event-fx
  :get-product
  (fn [{:keys [db]} [_ id]]
-   (js/console.log "get-product" id) 
    {:db         (assoc-in db [:loading :product] true)
     :http-xhrio {:method          :get
                  :uri             (str products-endpoint id)
                  :response-format (ajax/json-response-format {:keyword? true})
                  :on-success      [:get-product-success]
                  :on-failure      [:endpoint-request-error :get-product]}}))
+
+(reg-event-fx
+ :log-product
+ (fn [{:keys [_db]} [_ id]]
+   {:http-xhrio {:method          :post
+                 :uri             update-endpoint
+                 :body            {:id id}
+                 :response-format (ajax/json-response-format {:keyword? true})
+                 :on-failure      [:endpoint-request-error :log-product]}}))
+
+(reg-event-fx
+ :get-popular
+ (fn [{:keys [db]} [_]]
+   {:db         (assoc-in db [:loading :popular] true)
+    :http-xhrio {:method          :get
+                 :uri             populars-endpoint
+                 :response-format (ajax/json-response-format {:keyword? true})
+                 :on-success      [:get-popular-success]
+                 :on-failure      [:endpoint-request-error :get-popular]}}))
+
+(reg-event-fx
+ :get-recent
+ (fn [{:keys [db]} [_]]
+   {:db         (assoc-in db [:loading :recent] true)
+    :http-xhrio {:method          :get
+                 :uri             recents-endpoint
+                 :response-format (ajax/json-response-format {:keyword? true})
+                 :on-success      [:get-recent-success]
+                 :on-failure      [:endpoint-request-error :get-recent]}}))
 
 (reg-event-fx
  :get-similar
@@ -66,6 +97,20 @@
        (assoc-in [:product] nil))))
 
 (reg-event-db
+ :reset-popular
+ (fn [db _]
+   (-> db
+       (assoc-in [:loading :popular] false)
+       (assoc-in [:popular] nil))))
+
+(reg-event-db
+ :reset-recent
+ (fn [db _]
+   (-> db
+       (assoc-in [:loading :recent] false)
+       (assoc-in [:recent] nil))))
+
+(reg-event-db
  :reset-similar
  (fn [db _]
    (-> db
@@ -84,32 +129,56 @@
    (-> db
        (assoc-in [:errors] nil))))
 
+(defn parse-product
+  [product]
+  (let [product (into {} product)]
+    (reduce-kv
+     (fn [acc k v]
+       (assoc acc (keyword k) v))
+     {}
+     product)))
+
+(defn parse-db-product
+  [product]
+  (let [product (into {} product)]
+    (reduce-kv
+     (fn [acc k v]
+       (let [key (keyword (subs k 8))] ; remove "product/" prefix
+         (assoc acc key v)))
+     {}
+     product)))
+
 (reg-event-db
  :get-product-success
  (fn [db [_ product]]
-   (let [product-fn (fn [product]
-                       (let [product (into {} product)]
-                         (reduce-kv
-                          (fn [acc k v]
-                            (assoc acc (keyword k) v))
-                          {}
-                          product)))
-         product-map (product-fn product)]
+   (let [product-map (parse-product product)]
      (-> db
          (assoc-in [:loading :product] false)
          (assoc-in [:product] product-map)))))
 
 (reg-event-db
+ :get-popular-success
+ (fn [db [_ popular]]
+   (let [products (get popular "products") 
+         popular-map (parse-db-product products)]
+     (-> db
+         (assoc-in [:loading :popular] false)
+         (assoc-in [:popular] popular-map)))))
+
+(reg-event-db
+ :get-recent-success
+ (fn [db [_ recent]]
+   (let [products (get recent "products")
+         recent-map (parse-db-product products)]
+     (-> db
+         (assoc-in [:loading :recent] false)
+         (assoc-in [:recent] recent-map)))))
+
+(reg-event-db
  :get-similar-success
  (fn [db [_ similar]]
-   (let [similar-fn (fn [similar]
-                      (let [similar (into {} similar)]
-                        (reduce-kv
-                         (fn [acc k v]
-                           (assoc acc (keyword k) v))
-                         {}
-                         similar)))
-         similar-map (map similar-fn (get similar "similar"))]
+   (let [products  (get similar "similar") 
+         similar-map (map parse-product products)]
      (-> db
          (assoc-in [:loading :similar] false)
          (assoc-in [:similar] similar-map)))))

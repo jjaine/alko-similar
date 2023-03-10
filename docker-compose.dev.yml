@@ -1,8 +1,22 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:15.2
+    container_name: alko-similar-db-dev
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./alko-similar-db:/var/lib/postgresql/data
+      - ./alko-similar-server/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - 5432:5432
   server:
     image: alko-similar-server-dev
+    container_name: alko-similar-server-dev
+    links:
+      - db
     build:
       context: ./alko-similar-server
       dockerfile: dev.Dockerfile
@@ -11,9 +25,11 @@ services:
     ports:
       - 3000:3000
       - 40000:40000 # repl
-    container_name: alko-similar-server-dev
   client:
     image: alko-similar-client-dev
+    container_name: alko-similar-client-dev
+    links:
+      - server
     build:
       context: ./alko-similar-client
       dockerfile: dev.Dockerfile
@@ -23,4 +39,3 @@ services:
       - 3001:3001
       - 9630:9630 # for live reload
       - 3333:3333 # nrepl
-    container_name: alko-similar-client-dev

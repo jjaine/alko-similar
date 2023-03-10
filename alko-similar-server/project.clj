@@ -8,7 +8,11 @@
                  [metosin/reitit "0.5.18"]
                  [clj-time "0.15.2"]
                  [dk.ative/docjure "1.19.0"]
-                 [ring-cors "0.1.13"]]
+                 [ring-cors "0.1.13"]
+                 [com.github.seancorfield/next.jdbc "1.3.858"]
+                 [org.postgresql/postgresql "42.5.4"]
+                 [camel-snake-kebab "0.4.1"]
+                 [com.zaxxer/HikariCP "3.4.5"]]
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev {:source-paths ["dev/src"]
