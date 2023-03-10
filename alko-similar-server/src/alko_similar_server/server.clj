@@ -13,12 +13,16 @@
   (router/routes env))
 
 (defmethod ig/prep-key :server/jetty
-  [_ config] 
-  (merge config {:port (Integer/parseInt (env :port))}))
+  [_ config]
+  (if-let [env-port (env :port)]
+    (merge config {:port (Integer/parseInt env-port)})
+    config))
 
 (defmethod ig/prep-key :db/postgres
   [_ config]
-  (merge config {:jdbc-url (env :jdbc-database-url)}))
+  (if-let [jdbc-url (env :jdbc-database-url)]
+    (merge config {:jdbc-url jdbc-url})
+    config))
 
 (defmethod ig/init-key :server/jetty
   [_ {:keys [handler port]}]

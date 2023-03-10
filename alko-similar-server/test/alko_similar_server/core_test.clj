@@ -23,7 +23,7 @@
 
 (defn test-system-fixture-runner [testfunc]
   (try
-    (go "resources/config.edn")
+    (go "dev/resources/config.edn")
     (testfunc)
     (finally
       (halt))))
