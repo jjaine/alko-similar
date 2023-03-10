@@ -103,9 +103,9 @@ jobs:
       - name: 'Stop old server, pull new image, start server again'
         uses: appleboy/ssh-action@master
         env:
-          POSTGRES_USER=${{ secrets.PG_USER }}
-          POSTGRES_PASSWORD=${{ secrets.PG_PASSWORD }}
-          POSTGRES_DB=${{ secrets.PG_DB }}
+          POSTGRES_USER: ${{ secrets.PG_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.PG_DB }}
         with:
           host: ${{ secrets.INSTANCE_IP }}
           username: ${{ secrets.INSTANCE_USERNAME }}

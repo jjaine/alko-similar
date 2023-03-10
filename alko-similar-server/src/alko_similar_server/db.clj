@@ -2,12 +2,6 @@
   (:require [next.jdbc.sql :as sql]
             [next.jdbc :as jdbc]))
 
-(defn get-all-products
-  [db]
-  (with-open [conn (jdbc/get-connection db)]
-    (let [products (sql/find-by-keys conn :product :all)] 
-      {:products products})))
-
 (defn get-popular-products
   [db]
   (with-open [conn (jdbc/get-connection db)]
