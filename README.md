@@ -4,12 +4,16 @@ The app recommends similar products from the Alko catalogue.
 
 Running at [alko-similar.dy.fi](https://alko-similar.dy.fi).
 
-Made as the project for the Fullstack Open course. Log of hours used in [hours.md](hours.md).
+Made as the project for the [Full Stack open](https://fullstackopen.com/) course. Log of hours used in [hours.md](hours.md).
 
 # Server
 Clojure server that provides API endpoints for server health check and to fetch information about similar products.
 
 ### API endpoints
+`/api/products/popular` Get most-searched products.
+
+`/api/product/recent` Get most recently searched products.
+
 `/api/product/{product-id}` Get product details with id.
 
 **Parameters**
@@ -39,6 +43,6 @@ ClojureScript client that provides the users possibility to search for similar p
 # Development
 Use `docker compose -f docker-compose.dev.yml up --build` to build newest versions of the containers and run the development environment.
 
-Connect to the server REPL running at `localhost:40000` and use the `(reset)` in `user.clj` to start the server. You can use VS Code with [Calva](https://calva.io) for example! Then use `(scrape-data)` in `scraper.clj` to scrape the most up-to-date data to the server. The API can be viewed and tested at `http://localhost:3000/docs/`.
+Connect to the server REPL running at `localhost:40000` and use the `(go)` or `(reset)` in `user.clj` to start the server. You can use VS Code with [Calva](https://calva.io) for example! Then use `(scrape-data)` in `scraper.clj` to scrape the most up-to-date data to the server. The API can be viewed and tested at `http://localhost:3000/docs/`.
 
 The client is running at `http://localhost:3001` in development mode.
