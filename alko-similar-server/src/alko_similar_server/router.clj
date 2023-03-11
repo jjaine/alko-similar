@@ -66,10 +66,9 @@
                        :get     {:handler (fn [_] (let [res (scraper/scrape-data)]
                                                     res))}}]
        ["/api/health" {:summary "Is the server running?"
-                       :get     {:handler (fn [_] (rr/response nil))}}]
-       ["/api/" {:get {:handler (fn [_] (rr/not-found ["Endpoint not found"]))}}]
-       ["/" {:get {:handler (fn [_] (rr/not-found ["Endpoint not found"]))}}]]
+                       :get     {:handler (fn [_] (rr/response nil))}}]]
       router-config)
      (ring/routes
       (swagger-ui/create-swagger-ui-handler {:path "/docs"
-                                             :url "/docs/swagger.json"})))))
+                                             :url "/docs/swagger.json"})
+      (ring/create-default-handler)))))
