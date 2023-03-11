@@ -108,8 +108,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Sleep for 30 seconds
-      run: sleep 30s
+    - name: Sleep for 60 seconds
+      run: sleep 60s
       shell: bash
     - name: Health Check
       if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

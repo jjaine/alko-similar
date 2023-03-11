@@ -55,7 +55,7 @@
             [:> camera-icon {:style {:height "1.75rem" ; :> creates a Reagent component from a React one
                                      :width  "1.75rem"
                                      :color  "#333333"}}]]]
-          [:input {:class       "w-[25rem] h-4 rounded-xl py-6 pr-6 pl-[4.2rem] my-4"
+          [:input {:class       "w-[23.5rem] h-4 rounded-xl py-6 pr-6 pl-[4.2rem] my-4"
                    :type        "text"
                    :placeholder "Tuotteen numero tai alko.fi-linkki"
                    :value       @product/id
