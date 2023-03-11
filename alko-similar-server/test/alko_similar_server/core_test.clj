@@ -43,7 +43,7 @@
   (testing "Health route test"
     (is (= {:status 200 :headers {} :body nil}
            (test-endpoint "/api/health")))
-    (is (= nil
+    (is (= 404
            (-> (test-endpoint "wrong-url")
                :status)))))
 

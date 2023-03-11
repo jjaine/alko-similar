@@ -1,6 +1,5 @@
 (ns alko-similar-server.product
-  (:require [alko-similar-server.scraper :as scraper]
-            [clojure.pprint :refer [pprint]]
+  (:require [alko-similar-server.scraper :as scraper] 
             [ring.util.response :as rr]
             [clojure.string]))
 
@@ -88,7 +87,6 @@
 
 (defn get-details
   [request]
-  (pprint request)
   (if-let [id (-> request
                   :path-params
                   :product-id)]
@@ -108,7 +106,6 @@
 
 (defn get-similars
   [request]
-  (pprint request)
   (if-let [id (-> request
                   :path-params
                   :product-id)]
