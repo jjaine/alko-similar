@@ -6,7 +6,9 @@
             [reagent.core :as r]
             [re-frame.core :as rf]
             [clojure.string :as string]
-            [alko-similar-client.views.product :as product]))
+            [alko-similar-client.views.product :as product]
+            [alko-similar-client.views.popular :as popular]
+            [alko-similar-client.views.recent :as recent]))
 
 (def show-scanner (r/atom false))
 
@@ -33,13 +35,12 @@
 
 (defn search-by-url-or-id
   []
-  (let [product @(rf/subscribe [:product])
-        popular @(rf/subscribe [:popular])
-        recent  @(rf/subscribe [:recent])
-        errors  @(rf/subscribe [:errors])
-        scanner @(rf/subscribe [:scanner])
-        error   (get errors :get-product)]
-    (js/console.log "popular" popular "recent" recent)
+  (let [product     @(rf/subscribe [:product])
+        popular-ids @(rf/subscribe [:popular])
+        recent-ids  @(rf/subscribe [:recent])
+        errors      @(rf/subscribe [:errors])
+        scanner     @(rf/subscribe [:scanner])
+        error       (get errors :get-product)]
     (when (nil? product)
       [:div {:class "h-screen"}
        [:div {:class "shadow-lg bg-alko-gray flex flex-col items-center min-h-[10rem]"}
@@ -81,4 +82,7 @@
                          :color  "#d00000"}} error]])
          (when scanner
            [:f> barcode-reader])]]
-       ])))
+       (let [recent-products @(rf/subscribe [:recent-products])]
+         (recent/products recent-ids recent-products))
+       (let [popular-products @(rf/subscribe [:popular-products])]
+         (popular/products popular-ids popular-products))])))

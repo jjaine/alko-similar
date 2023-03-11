@@ -151,6 +151,17 @@
           (rr/response {:similar similar}))))
     (rr/not-found ["No product id given"])))
 
+(defn product-exists
+  [id]
+  (let [selected-by-id  (-> (filter (comp #{id} :id) @scraper/data)
+                            first)
+        selected-by-ean (-> (filter (comp #{id} :ean) @scraper/data)
+                            first)
+        selected        (if (nil? selected-by-id)
+                          selected-by-ean
+                          selected-by-id)]
+    (not (nil? selected))))
+
 (comment
   (get-details {:path-params {:product-id "942617"}})
   (get-details {:path-params {:product-id "568238"}})

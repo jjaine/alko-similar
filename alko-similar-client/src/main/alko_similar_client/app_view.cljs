@@ -14,6 +14,8 @@
                       (rf/dispatch [:reset-product])
                       (rf/dispatch [:reset-popular])
                       (rf/dispatch [:reset-recent])
+                      (rf/dispatch [:reset-popular-products])
+                      (rf/dispatch [:reset-recent-products])
                       (rf/dispatch [:reset-similar])
                       (rf/dispatch [:reset-prices])
                       (rf/dispatch [:set-scanner false])

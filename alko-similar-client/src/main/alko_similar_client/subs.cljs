@@ -17,6 +17,16 @@
    (:recent db)))
 
 (reg-sub
+ :popular-products
+ (fn [db _]
+   (:popular-products db)))
+
+(reg-sub
+ :recent-products
+ (fn [db _]
+   (:recent-products db)))
+
+(reg-sub
  :similar
  (fn [db _]
    (:similar db)))

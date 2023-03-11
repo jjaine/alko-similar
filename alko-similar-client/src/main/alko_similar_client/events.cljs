@@ -35,7 +35,7 @@
 
 (reg-event-fx
  :get-popular
- (fn [{:keys [db]} [_]]
+ (fn [{:keys [db]} _]
    {:db         (assoc-in db [:loading :popular] true)
     :http-xhrio {:method          :get
                  :uri             populars-endpoint
@@ -45,13 +45,31 @@
 
 (reg-event-fx
  :get-recent
- (fn [{:keys [db]} [_]]
+ (fn [{:keys [db]} _]
    {:db         (assoc-in db [:loading :recent] true)
     :http-xhrio {:method          :get
                  :uri             recents-endpoint
                  :response-format (ajax/json-response-format {:keyword? true})
                  :on-success      [:get-recent-success]
                  :on-failure      [:endpoint-request-error :get-recent]}}))
+
+(reg-event-fx
+ :get-popular-product
+ (fn [{:keys []} [_ id]]
+   {:http-xhrio {:method          :get
+                 :uri             (str products-endpoint id)
+                 :response-format (ajax/json-response-format {:keyword? true})
+                 :on-success      [:get-popular-product-success]
+                 :on-failure      [:endpoint-request-error :get-popular-product]}}))
+
+(reg-event-fx
+ :get-recent-product
+ (fn [{:keys []} [_ id]]
+   {:http-xhrio {:method          :get
+                 :uri             (str products-endpoint id)
+                 :response-format (ajax/json-response-format {:keyword? true})
+                 :on-success      [:get-recent-product-success]
+                 :on-failure      [:endpoint-request-error :get-recent-product]}}))
 
 (reg-event-fx
  :get-similar
@@ -113,6 +131,18 @@
        (assoc-in [:recent] nil))))
 
 (reg-event-db
+ :reset-popular-products
+ (fn [db _]
+   (-> db
+       (assoc-in [:popular-products] nil))))
+
+(reg-event-db
+ :reset-recent-products
+ (fn [db _]
+   (-> db
+       (assoc-in [:recent-products] nil))))
+
+(reg-event-db
  :reset-similar
  (fn [db _]
    (-> db
@@ -161,8 +191,10 @@
 (reg-event-db
  :get-popular-success
  (fn [db [_ popular]]
-   (let [products (get popular "products") 
-         popular-map (parse-db-product products)]
+   (let [products    (get popular "products") 
+         popular-map (->> products 
+                          (map parse-db-product)
+                          (map :id))]
      (-> db
          (assoc-in [:loading :popular] false)
          (assoc-in [:popular] popular-map)))))
@@ -170,16 +202,42 @@
 (reg-event-db
  :get-recent-success
  (fn [db [_ recent]]
-   (let [products (get recent "products")
-         recent-map (parse-db-product products)]
+   (let [products   (get recent "products")
+         recent-map (->> products 
+                         (map parse-db-product)
+                         (map :id))]
      (-> db
          (assoc-in [:loading :recent] false)
          (assoc-in [:recent] recent-map)))))
 
 (reg-event-db
+ :get-popular-product-success
+ (fn [db [_ popular-product]]
+   (let [popular-map      (parse-product popular-product)
+         id               (:id popular-map)
+         popular-products (:popular-products db)
+         popular-updated  (if (nil? popular-products)
+                            {id popular-map}
+                            (assoc popular-products id popular-map))]
+     (-> db
+         (assoc-in [:popular-products] popular-updated)))))
+
+(reg-event-db
+ :get-recent-product-success
+ (fn [db [_ recent-product]]
+   (let [recent-map      (parse-product recent-product)
+         id              (:id recent-map)
+         recent-products (:recent-products db)
+         recent-updated  (if (nil? recent-products)
+                           {id recent-map}
+                           (assoc recent-products id recent-map))]
+     (-> db
+         (assoc-in [:recent-products] recent-updated)))))
+
+(reg-event-db
  :get-similar-success
  (fn [db [_ similar]]
-   (let [products  (get similar "similar") 
+   (let [products    (get similar "similar") 
          similar-map (map parse-product products)]
      (-> db
          (assoc-in [:loading :similar] false)

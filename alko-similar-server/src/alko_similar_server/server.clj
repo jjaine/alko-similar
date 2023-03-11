@@ -26,17 +26,17 @@
 
 (defmethod ig/init-key :server/jetty
   [_ {:keys [handler port]}]
-  (println (str "Server started on port " port))
+  (println (str "Server starting on port " port))
   (jetty/run-jetty handler {:port port :join? false}))
 
 (defmethod ig/init-key :alko-similar-server/app
   [_ config]
-  (println "Initializing app")
+  (println "Initializing app...")
   (app config))
 
 (defmethod ig/init-key :db/postgres
   [_ {:keys [jdbc-url]}]
-  (println "Initializing db connection" jdbc-url)
+  (println "Initializing db connection...")
   (jdbc/with-options
     (njc/->pool HikariDataSource {:jdbcUrl jdbc-url})
     jdbc/snake-kebab-opts))

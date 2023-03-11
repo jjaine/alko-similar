@@ -57,11 +57,12 @@
                           (str price-cents))]
     [:p {:class "flex flex-row justify-end"}
      [:span {:class "text-4xl font-locator font-thin"} price-euros]
-     [:span {:class "text-m font-locator font-thin mt-[0.1rem] ml-[0.2rem] underline"} price-cents-str]]))
+     [:span {:class "text-xl font-locator font-thin mt-[0.05rem] ml-[0.2rem] underline"} price-cents-str]
+     [:span {:class "text-xl font-locator font-thin mt-[0.08rem] ml-[0.2rem]"} "€"]]))
 
 (defn product-package-size
   [package-size]
-  [:p {:class "text-m font-locator font-thin text-gray-500 text-right"} package-size])
+  [:p {:class "text-m font-locator font-thin text-gray-500 text-right mt-[-0.5rem]"} package-size])
 
 (defn product-description
   [description]
@@ -152,7 +153,7 @@
             [:div
              (product-name name)
              (product-type type subtype beer-type)]
-            [:div {:class "flex flex-col"}
+            [:div {:class "flex flex-col pl-4"}
              (product-price price)
              (product-package-size package-size)]]
            (product-description description)
