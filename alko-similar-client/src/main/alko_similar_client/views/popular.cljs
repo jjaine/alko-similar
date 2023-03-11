@@ -17,9 +17,10 @@
                    beer-type
                    country
                    image]} product-keywords]
-       [:div {:class  "flex flex-col w-36 m-1 justify-between cursor-pointer bg-white"
+       [:div {:class  "flex flex-col w-36 m-1 justify-between cursor-pointer bg-white hover:outline hover:outline-gray-300"
               :on-click #(do (rf/dispatch [:get-product id])
-                             (rf/dispatch [:get-similar id]))
+                             (rf/dispatch [:get-similar id])
+                             (rf/dispatch [:log-product id]))
               :key id}
         [:div
          (details/product-type type subtype beer-type)

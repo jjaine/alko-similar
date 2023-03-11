@@ -28,5 +28,5 @@
 | 08.03.2023 | 6     | styling the front page, implement barcode scanning & searching |
 | 09.03.2023 | 9     | setup nginx as reverse proxy with https support |
 | 10.03.2023 | 11    | integrate postgres as a database for the project, setup for both dev and prod |
-| 11.03.2023 | 4     | show recently searched and popular products on front page |
-| total      | 110   | | 
+| 11.03.2023 | 5     | show recently searched and popular products on front page, add hovers |
+| total      | 111   | | 

@@ -7,7 +7,7 @@
   []
   [:div.px-6 {:class "w-full flex flex-col justify-center items-center"}
    [:img {:src "./img/logo.svg"
-          :class "w-20 h-20 m-4"
+          :class "w-20 h-20 m-4 cursor-pointer"
           :on-click (fn []
                       (js/console.log "header")
                       (reset! product/id "")

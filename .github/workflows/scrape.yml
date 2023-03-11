@@ -1,4 +1,4 @@
-name: Scheduled tasks
+name: Daily scrape
 
 on:
   schedule:

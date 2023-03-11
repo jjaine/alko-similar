@@ -51,7 +51,7 @@
                                 (reset! product/id "")
                                 (reset! show-scanner (not @show-scanner))
                                 (rf/dispatch [:set-scanner @show-scanner]))}
-           [:div {:class "border-r border-gray-300 h-7 pl-4 my-[0.625rem] flex items-center"}
+           [:div {:class "border-r border-gray-300 h-12 pl-4 flex items-center hover:bg-gray-100 hover:rounded-l-xl"}
             [:> camera-icon {:style {:height "1.75rem" ; :> creates a Reagent component from a React one
                                      :width  "1.75rem"
                                      :color  "#333333"}}]]]
@@ -68,7 +68,7 @@
                  :on-click #(do (rf/dispatch [:get-product @product/id])
                                 (rf/dispatch [:get-similar @product/id])
                                 (rf/dispatch [:log-product @product/id]))}
-           [:div {:class "border-l border-gray-300 h-7 pl-3 my-[0.625rem] flex items-center"}
+           [:div {:class "border-l border-gray-300 h-12 pl-3 flex items-center hover:bg-gray-100 hover:rounded-r-xl"}
             [:> search-icon {:style {:height "1.75rem" ; :> creates a Reagent component from a React one
                                      :width  "1.75rem"
                                      :color  "#333333"}}]]]]

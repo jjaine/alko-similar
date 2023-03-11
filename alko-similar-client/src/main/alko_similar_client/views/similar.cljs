@@ -106,7 +106,7 @@
                    image
                    score
                    product-score]} similar-keywords]
-       [:div {:class  "flex flex-col w-36 border border-gray-300 m-1 justify-between cursor-pointer"
+       [:div {:class  "flex flex-col w-36 border border-gray-300 m-1 justify-between cursor-pointer hover:border-gray-700"
               :on-click #(do (clear-filters)
                              (reset! filter-by {})
                              (reset! min-price nil)

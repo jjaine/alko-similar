@@ -74,7 +74,7 @@ jobs:
           push: true
           tags: essijukkala/alko-similar:server
   deploy:
-    name: Deploy docker image
+    name: Deploy docker images
     runs-on: ubuntu-latest
     needs: build
     # Only run on main branch, not on pull requests
