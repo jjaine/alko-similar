@@ -10,11 +10,11 @@ services:
     volumes:
       - ./alko-similar-db:/var/lib/postgresql/data
       - ./alko-similar-server/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-    ports:
-      - 5432:5432
   server:
     image: alko-similar-server-dev
     container_name: alko-similar-server-dev
+    environment:
+      JDBC_DATABASE_URL: jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres
     links:
       - db
     build:

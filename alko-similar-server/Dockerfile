@@ -17,4 +17,4 @@ WORKDIR /app
 
 ENV PORT 3000
 
-CMD lein run "resources/config.edn"
+CMD JDBC_DATABASE_URL=$JDBC_DATABASE_URL lein run "resources/config.edn"
