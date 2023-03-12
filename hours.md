@@ -29,4 +29,5 @@
 | 09.03.2023 | 9     | setup nginx as reverse proxy with https support |
 | 10.03.2023 | 11    | integrate postgres as a database for the project, setup for both dev and prod |
 | 11.03.2023 | 5     | show recently searched and popular products on front page, add hovers |
-| total      | 111   | | 
+| 12.03.2023 | 1     | fix bug with postgres env variable in production |
+| total      | 112   | | 
