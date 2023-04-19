@@ -30,4 +30,5 @@
 | 10.03.2023 | 11    | integrate postgres as a database for the project, setup for both dev and prod |
 | 11.03.2023 | 5     | show recently searched and popular products on front page, add hovers |
 | 12.03.2023 | 1     | fix bug with postgres env variable in production |
-| total      | 112   | | 
+| 19.04.2023 | 2     | fix scraping |
+| total      | 114   | | 

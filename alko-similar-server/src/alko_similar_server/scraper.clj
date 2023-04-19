@@ -8,6 +8,7 @@
 (def alko-url "https://www.alko.fi/INTERSHOP/static/WFS/Alko-OnlineShop-Site/-/Alko-OnlineShop/fi_FI/Alkon%20Hinnasto%20Tekstitiedostona/alkon-hinnasto-tekstitiedostona.xlsx")
 
 (defn- copy [uri file]
+  (System/setProperty "http.agent" "")
   (with-open [in  (io/input-stream uri)
               out (io/output-stream file)]
     (io/copy in out)))
