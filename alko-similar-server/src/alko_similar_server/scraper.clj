@@ -3,15 +3,18 @@
             [dk.ative.docjure.spreadsheet :as ss]
             [clj-time.core :as t]
             [clj-time.format :as f]
+            [clj-http.client :as http-client]
             [ring.util.response :as rr]))
 
 (def alko-url "https://www.alko.fi/INTERSHOP/static/WFS/Alko-OnlineShop-Site/-/Alko-OnlineShop/fi_FI/Alkon%20Hinnasto%20Tekstitiedostona/alkon-hinnasto-tekstitiedostona.xlsx")
 
-(defn- copy [uri file]
-  (System/setProperty "http.agent" "")
-  (with-open [in  (io/input-stream uri)
-              out (io/output-stream file)]
-    (io/copy in out)))
+(defn- copy [uri path]
+  (println "Copying file from" uri "to" path) 
+  (let [file (-> (http-client/get alko-url
+                                  {:headers {:user-agent ""}
+                                   :as :stream})
+                 :body)]
+    (io/copy file (java.io.File. path))))
 
 (def data (atom nil))
 

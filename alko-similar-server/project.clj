@@ -12,7 +12,8 @@
                  [org.postgresql/postgresql "42.5.4"]
                  [com.github.seancorfield/next.jdbc "1.3.858"]
                  [camel-snake-kebab "0.4.1"]
-                 [com.zaxxer/HikariCP "3.4.5"]]
+                 [com.zaxxer/HikariCP "3.4.5"]
+                 [clj-http "3.12.3"]]
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev {:source-paths ["dev/src"]

@@ -31,4 +31,5 @@
 | 11.03.2023 | 5     | show recently searched and popular products on front page, add hovers |
 | 12.03.2023 | 1     | fix bug with postgres env variable in production |
 | 19.04.2023 | 2     | fix scraping |
-| total      | 114   | | 
+| 26.04.2023 | 1     | actually fix scraping |
+| total      | 115   | | 
