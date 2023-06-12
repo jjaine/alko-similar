@@ -32,4 +32,5 @@
 | 12.03.2023 | 1     | fix bug with postgres env variable in production |
 | 19.04.2023 | 2     | fix scraping |
 | 26.04.2023 | 1     | actually fix scraping |
-| total      | 115   | | 
+| 12.06.2023 | 3     | debug database problem, add logging |
+| total      | 118   | | 

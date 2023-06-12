@@ -6,12 +6,14 @@
   [db]
   (with-open [conn (jdbc/get-connection db)]
     (let [products (sql/query conn ["SELECT * FROM product ORDER BY look_count DESC LIMIT 5"])]
+      (println "get-popular-products" products)
       {:products products})))
 
 (defn get-recent-products
   [db]
   (with-open [conn (jdbc/get-connection db)]
     (let [products (sql/query conn ["SELECT * FROM product ORDER BY look_date DESC LIMIT 5"])]
+      (println "get-recent-products" products)
       {:products products})))
 
 (defn insert-product!

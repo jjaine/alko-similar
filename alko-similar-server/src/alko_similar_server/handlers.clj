@@ -7,13 +7,15 @@
 
 (defn list-popular-products
   [db]
-  (fn [_request]
+  (fn [request]
+    (println "list-popular-products" request)
     (let [products (db/get-popular-products db)]
       (rr/response products))))
 
 (defn list-recent-products
   [db]
-  (fn [_request]
+  (fn [request]
+    (println "list-recent-products" request)
     (let [products (db/get-recent-products db)]
       (rr/response products))))
 
