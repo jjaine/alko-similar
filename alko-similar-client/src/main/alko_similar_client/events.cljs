@@ -60,7 +60,7 @@
                  :uri             (str products-endpoint id)
                  :response-format (ajax/json-response-format {:keyword? true})
                  :on-success      [:get-popular-product-success]
-                 :on-failure      [:get-recent-or-popular-product-failure]}}))
+                 :on-failure      [:get-popular-product-failure]}}))
 
 (reg-event-fx
  :get-recent-product
@@ -69,7 +69,7 @@
                  :uri             (str products-endpoint id)
                  :response-format (ajax/json-response-format {:keyword? true})
                  :on-success      [:get-recent-product-success]
-                 :on-failure      [:get-recent-or-popular-product-failure]}}))
+                 :on-failure      [:get-recent-product-failure]}}))
 
 (reg-event-fx
  :get-similar
@@ -235,15 +235,28 @@
          (assoc-in [:recent-products] recent-updated)))))
 
 (reg-event-db
- :get-recent-or-popular-product-failure
+ :get-recent-product-failure
  (fn [db [_ recent-product]]
-   (let [id              (:id recent-product)
+   (let [uri             (:uri recent-product) 
+         id              (subs uri (inc (.lastIndexOf uri "/")))
          recent-products (:recent-products db)
          recent-updated  (if (nil? recent-products)
                            {id nil}
                            (assoc recent-products id nil))]
      (-> db
          (assoc-in [:recent-products] recent-updated)))))
+
+(reg-event-db
+ :get-popular-product-failure
+ (fn [db [_ popular-product]]
+   (let [uri              (:uri popular-product)
+         id               (subs uri (inc (.lastIndexOf uri "/")))
+         popular-products (:popular-products db)
+         popular-updated  (if (nil? popular-products)
+                            {id nil}
+                            (assoc popular-products id nil))]
+     (-> db
+         (assoc-in [:popular-products] popular-updated)))))
 
 (reg-event-db
  :get-similar-success
