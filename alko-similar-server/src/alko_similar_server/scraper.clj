@@ -68,7 +68,7 @@
                     (rr/response {:operation "scraped"
                                   :info      (str "Scraped at " (f/unparse (f/formatters :date) current-time))}))
                 (rr/response {:operation "updated"
-                              :info      (str "Updated from disk at " (f/unparse (f/formatters :date) current-time))})))))
+                              :info      (str "Updated from disk at " (f/unparse (f/formatters :date) current-time) ", previous scrape at " (f/unparse (f/formatters :date) prev-scrape-time))})))))
       (do
         (reset! data (process-data))
         (rr/response {:operation "none"

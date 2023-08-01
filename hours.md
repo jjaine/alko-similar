@@ -33,5 +33,5 @@
 | 19.04.2023 | 2     | fix scraping |
 | 26.04.2023 | 1     | actually fix scraping |
 | 12.06.2023 | 3     | debug database problem, add logging |
-| 01.08.2023 | 4     | scraping is broken, make workaround for updating xlsx manually, fix bugs with unknown products |
-| total      | 122   | | 
+| 01.08.2023 | 5     | scraping is broken, make workaround for updating xlsx manually, fix bugs with unknown products, add better logging for scraping |
+| total      | 123   | | 

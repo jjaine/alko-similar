@@ -161,6 +161,7 @@
 
 (comment
   (get-details {:path-params {:product-id "942617"}})
+  (get-details {:path-params {:product-id "946156"}})
   (get-details {:path-params {:product-id "568238"}})
   (get-details {:path-params {:product-id "3504040120133"}})
   (get-details {:path-params {:product-id "350404012013"}})
