@@ -60,7 +60,7 @@
                  :uri             (str products-endpoint id)
                  :response-format (ajax/json-response-format {:keyword? true})
                  :on-success      [:get-popular-product-success]
-                 :on-failure      [:endpoint-request-error :get-popular-product]}}))
+                 :on-failure      [:get-recent-or-popular-product-failure]}}))
 
 (reg-event-fx
  :get-recent-product
@@ -69,7 +69,7 @@
                  :uri             (str products-endpoint id)
                  :response-format (ajax/json-response-format {:keyword? true})
                  :on-success      [:get-recent-product-success]
-                 :on-failure      [:endpoint-request-error :get-recent-product]}}))
+                 :on-failure      [:get-recent-or-popular-product-failure]}}))
 
 (reg-event-fx
  :get-similar
@@ -231,6 +231,17 @@
          recent-updated  (if (nil? recent-products)
                            {id recent-map}
                            (assoc recent-products id recent-map))]
+     (-> db
+         (assoc-in [:recent-products] recent-updated)))))
+
+(reg-event-db
+ :get-recent-or-popular-product-failure
+ (fn [db [_ recent-product]]
+   (let [id              (:id recent-product)
+         recent-products (:recent-products db)
+         recent-updated  (if (nil? recent-products)
+                           {id nil}
+                           (assoc recent-products id nil))]
      (-> db
          (assoc-in [:recent-products] recent-updated)))))
 

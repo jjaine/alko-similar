@@ -13,7 +13,9 @@
   [type subtype beer-type]
   (let [subtype-key             (if (string/blank? subtype)
                                   (if (string/blank? beer-type)
-                                    type
+                                    (if (string/blank? type)
+                                      ""
+                                      type)
                                     beer-type)
                                   subtype)
         subtype-color-processed (->> (-> subtype-key
@@ -29,8 +31,8 @@
                                   subtype-color
                                   "bg-gray-800 text-white")]
     [:div {:class "flex flex-col"}
-     [:p {:class (str "py-1 px-2 text-[0.65rem] text-center font-locator " color)} (string/capitalize subtype-key)]
-     [:p {:class "border-b border-gray-300 py-1 px-2 pl text-[0.65rem] text-center font-locator"} (string/capitalize type)]
+     (when (not (string/blank? subtype-key)) [:p {:class (str "py-1 px-2 text-[0.65rem] text-center font-locator " color)} (string/capitalize subtype-key)])
+     (when (not (string/blank? type)) [:p {:class "border-b border-gray-300 py-1 px-2 pl text-[0.65rem] text-center font-locator"} (string/capitalize type)])
      ]))
 
 (defn product-price
