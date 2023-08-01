@@ -12,6 +12,7 @@ profiles.clj
 .lein-*
 *.prepl-port
 *.xlsx
+!alko-similar-server/resources/alko.xlsx
 .clj-kondo
 .lsp
 prev-scrape-time.txt
