@@ -107,7 +107,7 @@ jobs:
           source: "alko-similar-server/resources/schema.sql"
           target: "~"
       - name: 'Stop old server, pull new image, start server again'
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.0.3
         env:
           POSTGRES_USER: ${{ secrets.PG_USER }}
           POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
