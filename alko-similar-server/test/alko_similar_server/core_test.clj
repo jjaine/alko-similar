@@ -73,7 +73,8 @@
 (comment
   (test-endpoint "/api/health")
   (test-endpoint "/wrong-url")
-  (test-endpoint "/api/product/447328") 
+  (test-endpoint "/api/product/447328")
+  
   (let [id           "447328"
         response (test-endpoint (str "/api/product/" id))
         received-id (-> response
