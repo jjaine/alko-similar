@@ -1,5 +1,5 @@
 (ns alko-similar-server.core-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [use-fixtures, deftest, testing, is]]
             [integrant.core :as ig]
             [ring.mock.request :as mock]
             [muuntaja.core :as m]
