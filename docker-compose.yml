@@ -29,7 +29,7 @@ services:
     links: 
       - client
     ports:
-      - 8888:8888
+      - 8989:8989
       - 80:80
       - 443:443
     volumes:

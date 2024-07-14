@@ -80,8 +80,7 @@
         received-id (-> response
                         :body
                         :id)]
-    (println received-id
-     ) 
+    (println received-id)
   )
   (go "resources/config.edn")
   (halt)
