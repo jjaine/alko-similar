@@ -49,7 +49,7 @@
 
 (deftest get-product-route-test
   (testing "Get product route test"
-    (let [id          "915083"
+    (let [id          "447328"
           response    (test-endpoint (str "/api/product/" id))
           status      (:status response)
           received-id (-> response
@@ -60,7 +60,7 @@
 
 (deftest get-similar-route-test
   (testing "Get similar route test"
-    (let [id       "915083"
+    (let [id       "447328"
           response (test-endpoint (str "/api/similar/" id))
           status   (:status response)
           similar  (-> response
@@ -73,9 +73,9 @@
 (comment
   (test-endpoint "/api/health")
   (test-endpoint "/wrong-url")
-  (test-endpoint "/api/product/915083")
+  (test-endpoint "/api/product/447328")
   
-  (let [id           "915083"
+  (let [id           "447328"
         response (test-endpoint (str "/api/product/" id))
         received-id (-> response
                         :body
