@@ -97,7 +97,7 @@ jobs:
           username: ${{ secrets.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PRIVATE_KEY }}
           source: "nginx-conf/nginx.conf"
-          target: "~/nginx-conf"
+          target: "~"
       - name: 'Update schema.sql'
         uses: appleboy/scp-action@v0.1.7
         with:
