@@ -41,16 +41,3 @@ services:
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
-  pihole:
-    image: pihole/pihole:latest
-    container_name: pihole
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-    environment:
-      TZ: 'Europe/Helsinki'
-      #WEBPASSWORD: 'set a secure password here or it will be random'
-    volumes:
-      - './etc-pihole:/etc/pihole'
-      - './etc-dnsmasq.d:/etc/dnsmasq.d'
-    restart: unless-stopped
