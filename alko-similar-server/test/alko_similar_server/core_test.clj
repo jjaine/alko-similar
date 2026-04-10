@@ -3,7 +3,8 @@
             [integrant.core :as ig]
             [ring.mock.request :as mock]
             [muuntaja.core :as m]
-            [alko-similar-server.scraper :as scraper]))
+            ;[alko-similar-server.scraper :as scraper]
+            ))
 
 (defonce test-system (atom nil))
 
@@ -16,7 +17,7 @@
   (reset! test-system (let [config (-> config-file
                                        slurp
                                        ig/read-string)]
-                        (scraper/scrape-data)
+                        ;(scraper/scrape-data)
                         (-> config
                             ig/prep
                             ig/init))))
