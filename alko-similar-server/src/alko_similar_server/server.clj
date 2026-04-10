@@ -53,7 +53,7 @@
 
 (defn -main
   [config-file]
-  (scraper/scrape-data)
+  (reset! scraper/data (scraper/process-data))
   (let [config (-> config-file
                    slurp
                    ig/read-string)]
