@@ -3,7 +3,7 @@
             [integrant.core :as ig]
             [ring.mock.request :as mock]
             [muuntaja.core :as m]
-            ;[alko-similar-server.scraper :as scraper]
+            [alko-similar-server.scraper :as scraper]
             ))
 
 (defonce test-system (atom nil))
@@ -17,7 +17,7 @@
   (reset! test-system (let [config (-> config-file
                                        slurp
                                        ig/read-string)]
-                        ;(scraper/scrape-data)
+                        (reset! scraper/data (scraper/process-data))
                         (-> config
                             ig/prep
                             ig/init))))
@@ -50,7 +50,7 @@
 
 (deftest get-product-route-test
   (testing "Get product route test"
-    (let [id          "447328"
+    (let [id          "464277"
           response    (test-endpoint (str "/api/product/" id))
           status      (:status response)
           received-id (-> response
@@ -61,7 +61,7 @@
 
 (deftest get-similar-route-test
   (testing "Get similar route test"
-    (let [id       "447328"
+    (let [id       "464277"
           response (test-endpoint (str "/api/similar/" id))
           status   (:status response)
           similar  (-> response
@@ -74,7 +74,7 @@
 (comment
   (test-endpoint "/api/health")
   (test-endpoint "/wrong-url")
-  (test-endpoint "/api/product/447328") 
+  (test-endpoint "/api/product/908195")
   (let [id       "447328"
         response (test-endpoint (str "/api/product/" id))
         received-id (-> response
@@ -82,6 +82,7 @@
                         :id)]
     (println received-id)
   )
-  (go "resources/config.edn")
+  (go "dev/resources/config.edn")
+  @scraper/data
   (halt)
   )
