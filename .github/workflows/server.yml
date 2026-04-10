@@ -138,7 +138,7 @@ jobs:
       shell: bash
     - name: Health Check
       if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-      uses: jtalk/url-health-check-action@v4
+      uses: jtalk/url-health-check-action@v5
       with:
         # Check the following URLs one by one sequentially
         url: https://${{ secrets.INSTANCE_IP }}/api/health
