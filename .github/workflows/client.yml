@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6.0.2
 
     - name: Setup Clojure tools
-      uses: DeLaGuardo/setup-clojure@12.5
+      uses: DeLaGuardo/setup-clojure@13.6.0
       with:
           # Install just one or all simultaneously
           # The value must indicate a particular version of the tool, or use 'latest'
@@ -66,7 +66,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
       - name: 'Update docker-compose.yml'
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -107,7 +107,7 @@ jobs:
     needs: deploy
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6.0.2
     - name: Sleep for 60 seconds
       run: sleep 60s
       shell: bash
